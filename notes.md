@@ -3,9 +3,15 @@
 300. Longest Increasing Subsequence.
     - solve with binary search
     - solve with indexed binary tree
+344. Reverse string
+    - try to solve with bit manipulation
 542. 01 Matrix
+    - not solved at all
+567. Permutation in String
+    - not solved at all
 116. Populating Next Right Pointers in Each Node
 994. Rotting Oranges
+    - not solved at all
 300. Longest Increasing Subsequence
     - there are several better solutions
 53. Maximum Subarray
