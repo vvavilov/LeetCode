@@ -16,3 +16,5 @@
     - there are several better solutions
 53. Maximum Subarray
     - find divide and conqueur solution
+572. Subtree of Another Tree
+    - KMP solution
