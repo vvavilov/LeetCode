@@ -16,5 +16,10 @@
     - there are several better solutions
 53. Maximum Subarray
     - find divide and conqueur solution
+14. Longest Common Prefix
+    - Can be solved with horizontal search, binary search, divide and conq
+
 572. Subtree of Another Tree
+    - KMP solution
+28. Implement strStr()
     - KMP solution
