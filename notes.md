@@ -19,6 +19,9 @@
 14. Longest Common Prefix
     - Can be solved with horizontal search, binary search, divide and conq
 
+94. Binary Tree Inorder Traversal
+    - Do it once again
+
 572. Subtree of Another Tree
     - KMP solution
 28. Implement strStr()
