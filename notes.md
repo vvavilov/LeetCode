@@ -26,3 +26,13 @@
     - KMP solution
 28. Implement strStr()
     - KMP solution
+
+136. Single Number
+    - Solve
+
+169. Majority Element
+    - Solve
+
+202. Happy Number
+    - Read other solutions,
+    - Understand complexity,
