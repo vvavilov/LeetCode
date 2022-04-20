@@ -21,14 +21,16 @@
         }
         
         var steps = new int[nums.Length];
-        steps[0] = nums[0];
-        steps[1] = Math.Max(nums[1], nums[0]);
+        var furtherRobResult = nums[0];
+        var neighhbourRobResult = Math.Max(nums[1], nums[0]);
+        
         for(int i = 2; i < nums.Length; i++) {
-            var robCurrent = nums[i] + steps[i-2];
-            var doNotRobCurrent = steps[i-1];
-            steps[i] = Math.Max(robCurrent, doNotRobCurrent);
+            var robCurrent = nums[i] + furtherRobResult;
+            var doNotRobCurrent = neighhbourRobResult;
+            furtherRobResult = neighhbourRobResult;
+            neighhbourRobResult = Math.Max(robCurrent, doNotRobCurrent);
         }
         
-        return steps[nums.Length - 1];
+        return neighhbourRobResult;
     }
 }
