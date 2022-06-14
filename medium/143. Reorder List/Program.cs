@@ -1,67 +1,78 @@
-﻿/**
- * Definition for singly-linked list.
- * public class ListNode {
- *     public int val;
- *     public ListNode next;
- *     public ListNode(int val=0, ListNode next=null) {
- *         this.val = val;
- *         this.next = next;
- *     }
- * }
- */
-public class Solution {
-    public void ReorderList(ListNode head) {
-        if(head == null || head.next == null) {
-            return;
-        }
+﻿public class Solution {
+    public string LongestWord(string[] words) {
+        var trie = new Trie(words);
         
-        var mid = SplitList(head);
-        var right = Reverse(mid);
+        var longest = GetLongest(trie.root, -1);
+        longest.RemoveFirst();
         
-        var left = head;
-        var current = new ListNode(0, head);
+        return new String(longest.Select(x => (char)(x + 'a')).ToArray());
         
-    
-        while(left != null) {
-            var nextLeft = left.next;
-            var nextRight = right?.next;
-            current.next = left;
-            current.next.next = right;
-            
-            left = nextLeft;
-            right = nextRight;
-            current = current.next.next;
-        }
     }
     
-    private ListNode Reverse(ListNode head) {
-        ListNode prev = null;
-        
-        while(head != null) {
-            var next = head.next;
-            head.next = prev;
-            prev = head;
-            head = next;
+    private LinkedList<int> GetLongest(Node node, int value) {
+        if(node == null || !node.isWordEnding) {
+            return new LinkedList<int>();
         }
         
-        return prev;
+        var longestChild = new LinkedList<int>();
+        for(int i = 0; i < 26; i++) {
+            var child = GetLongest(node.children[i], i);
+            if(child.Count > longestChild.Count) {
+                longestChild = child;
+            }
+        }
+        
+        longestChild.AddFirst(value);
+        return longestChild;
     }
     
     
-    private ListNode SplitList(ListNode head) {
-        var dummy = new ListNode(0, head);
-        
-        var fast = dummy;
-        var slow = dummy;
-        
-        while(fast != null && fast.next != null) {
-            fast = fast.next.next;
-            slow = slow.next;
+}
+
+public class Trie {
+    public Node root;
+    
+    public Trie(string[] words) {
+        root = new Node();
+        root.MaskWordEnding();
+
+        foreach(var word in words) {
+            AddWord(word);
+        }
+    }
+    
+    public void AddWord(string word) {
+        var node = root;
+
+        foreach(var c in word) {
+            node = node.AddSymbol(c);
         }
         
-        var secondHalf = slow.next;
-        slow.next = null;
-        
-        return secondHalf;
+        node.MaskWordEnding();
     }
 }
+
+public class Node {
+    public Node[] children;
+    public bool isWordEnding;
+    
+    public Node() {
+        children = new Node[26];
+        isWordEnding = false;
+    }
+    
+    public Node AddSymbol(char c) {
+        var pos = (int)(c - 'a');
+        
+        if(children[pos] == null) {
+            children[pos] = new Node();
+        }
+        
+        return children[pos];
+    }
+    
+    public void MaskWordEnding() {
+        isWordEnding = true;
+    }
+}
+
