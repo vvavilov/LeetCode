@@ -1,30 +1,29 @@
 ﻿public class Solution {
     public IList<IList<int>> CombinationSum2(int[] candidates, int target) {
-        List<IList<int>> result = new();
         Array.Sort(candidates);
-        Combination(candidates, target, 0, result, new LinkedList<int>());        
+        List<IList<int>> result = new();
+        Backtrack(candidates, target, new List<int>(), result, 0);
         return result;
     }
     
-    private void Combination(int[] candidates, int target, int index, List<IList<int>> result, LinkedList<int> accum) {
+    private void Backtrack(int[] candidates, int target, List<int> current, IList<IList<int>> result, int pos) {
+        if(target == 0) {
+            result.Add(new List<int>(current));
+            return;
+        }
+        
         if(target < 0) {
             return;
         }
-        
-        if(target == 0) {
-            result.Add(new List<int>(accum));
-            return;
-        }
-        
-        for(int i = index; i < candidates.Length; i++) {
-            var item = candidates[i];
-            if(i > index && item == candidates[i-1]) {
+                
+        for(int i = pos; i < candidates.Length; i++) {
+            if(i > pos && candidates[i] == candidates[i-1]) {
                 continue;
             }
-
-            accum.AddLast(item);
-            Combination(candidates, target - item, i + 1, result, accum);
-            accum.RemoveLast();
-        }   
+            var val = candidates[i];
+            current.Add(val);
+            Backtrack(candidates, target - val, current, result, i + 1);
+            current.RemoveAt(current.Count - 1);
+        }
     }
 }
