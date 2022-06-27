@@ -48,3 +48,9 @@
 22. Generate Parentheses
 33. Search in Rotated Sorted Array
 34. Find First and Last Position of Element in Sor
+
+673. Number of Longest Increasing Subsequence
+    - there are better ways than dp
+
+92. Reverse Linked List II
+    - recursive
