@@ -25,6 +25,7 @@
 572. Subtree of Another Tree
     - KMP solution
 28. Implement strStr()
+    - once more
     - KMP solution
 
 136. Single Number
