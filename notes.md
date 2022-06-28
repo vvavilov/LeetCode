@@ -3,6 +3,10 @@
 300. Longest Increasing Subsequence.
     - solve with binary search
     - solve with indexed binary tree
+301. Reverse string
+    - try to solve with bit manipulation
+302. 01 Matrix
+    - not solved at all
 344. Reverse string
     - try to solve with bit manipulation
 542. 01 Matrix
@@ -42,7 +46,6 @@
 34. Find First and Last Position of Element in Sor
 673. Number of Longest Increasing Subsequence
     - there are better ways than dp
-
 92. Reverse Linked List II
     - recursive
 14. Other solutions
