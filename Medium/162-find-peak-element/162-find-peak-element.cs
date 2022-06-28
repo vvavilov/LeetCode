@@ -5,7 +5,7 @@ public class Solution {
         
         while(left < right) {
             var mid = (int)Math.Ceiling((right - left) / 2d + left);
-            var isIncreasing = mid == 0 || nums[mid] > nums[mid - 1];
+            var isIncreasing = nums[mid] > nums[mid - 1];
             
             if(isIncreasing) {
                 left = mid;
