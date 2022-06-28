@@ -1,4 +1,4 @@
-### Not the best solved tasks
+### to do for solved tasks
 
 300. Longest Increasing Subsequence.
     - solve with binary search
@@ -18,42 +18,31 @@
     - find divide and conqueur solution
 14. Longest Common Prefix
     - Can be solved with horizontal search, binary search, divide and conq
-
 94. Binary Tree Inorder Traversal
     - Do it once again
-
 572. Subtree of Another Tree
     - KMP solution
 28. Implement strStr()
     - once more
     - KMP solution
-
 136. Single Number
     - Solve
-
 169. Majority Element
     - Solve
-
 202. Happy Number
     - Read other solutions,
     - Understand complexity,
-
 416. Partition Equal Subset Sum
-    - Other solutions
-    https://leetcode.com/problems/partition-equal-subset-sum/discuss/462699/Whiteboard-Editorial.-All-Approaches-explained.
-
+    - Other solutions: https://leetcode.com/problems/partition-equal-subset-sum/discuss/462699/Whiteboard-Editorial.-All-Approaches-explained.
 15. 3Sum
     - Once more
 17. Letter Combinations of a Phone Number
-
 22. Generate Parentheses
 33. Search in Rotated Sorted Array
 34. Find First and Last Position of Element in Sor
-
 673. Number of Longest Increasing Subsequence
     - there are better ways than dp
 
 92. Reverse Linked List II
     - recursive
-
 14. Other solutions
