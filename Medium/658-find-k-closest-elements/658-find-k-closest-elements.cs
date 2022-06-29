@@ -7,8 +7,6 @@ public class Solution {
         }
         
         var closestOne = FindSingleClosest(arr, x);
-        
-        Console.WriteLine(closestOne);
         var numberOfItems = k;
 
         k--;
