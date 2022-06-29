@@ -95,4 +95,8 @@
 
 14 . 
     
-    - Other solutions 
+    - Other solutions
+    
+621. Task Scheduler
+    - there's O(n) sol
+    - sol without hash table
