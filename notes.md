@@ -100,3 +100,6 @@
 621. Task Scheduler
     - there's O(n) sol
     - sol without hash table
+
+658. Find K Closest Elements
+    - much better solutions
