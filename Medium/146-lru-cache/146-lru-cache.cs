@@ -1,9 +1,93 @@
 public class LRUCache {
+    class Node {
+        public Node Prev {get;set;}
+        public Node Next {get;set;}
+        
+        public int Key {get;set;}
+        public int Value {get;set;}
+    }
+    
+    private Dictionary<int, Node> cache = new();
+    private Node queueStart;
+    private Node queueEnd;
+    private int capacity;
+    
+    public LRUCache(int capacity) {
+        this.capacity = capacity;
+        queueStart = new Node();
+        queueEnd = new Node();
+        
+        Link(queueStart, queueEnd);
+        
+    }
+    
+    public int Get(int key) {
+        cache.TryGetValue(key, out var node);
+        
+        if(node == null) {
+            return -1;
+        }
+        
+        MoveToStart(node);
+        return node.Value;
+    }
+    
+    private void MoveToStart(Node node) {
+        Dequeue(node);
+        Enqueue(node);
+    }
+    
+    private void Link(Node left, Node right) {
+        left.Next = right;
+        right.Prev = left;
+    }
+    
+    private void Enqueue(Node node) {
+        var first = queueStart.Next;
+        Link(queueStart, node);
+        Link(node, first);
+    }
+    
+    private void Dequeue(Node node) {
+        var next = node.Next;
+        var prev = node.Prev;
+
+        Link(prev, next);
+    }
+    
+    public void Put(int key, int value) {
+        cache.TryGetValue(key, out var node);
+        
+        if(node != null) {
+            node.Value = value;
+            MoveToStart(node);
+        } else {
+            if(capacity == cache.Count) {
+                var nodeToEvict = queueEnd.Prev;
+                Dequeue(nodeToEvict);
+                cache.Remove(nodeToEvict.Key);
+            }
+            
+            node = new Node { Value = value, Key = key };
+            Enqueue(node);
+            cache[key] = node;
+        }
+    }
+}
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * LRUCache obj = new LRUCache(capacity);
+ * int param_1 = obj.Get(key);
+ * obj.Put(key,value);
+ */
+
+public class LRUCacheHeap {
     private PriorityQueue evictionOrder;
     private Dictionary<int, Item> cache;
     private int capacity;
     
-    public LRUCache(int capacity) {
+    public LRUCacheHeap(int capacity) {
         this.capacity = capacity;
         evictionOrder = new PriorityQueue();
         cache = new Dictionary<int, Item>();
