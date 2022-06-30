@@ -103,3 +103,6 @@
 
 658. Find K Closest Elements
     - much better solutions
+
+75. Sort Colors
+    - using quick search variation
