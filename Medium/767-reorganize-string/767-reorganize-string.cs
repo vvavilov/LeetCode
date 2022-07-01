@@ -9,10 +9,7 @@ public class Solution {
         
         while(heap.Count > 0) {
             heap.TryDequeue(out var firstTryLetter, out var firstTryCount);
-            Console.WriteLine("firstTryLetter: {0}", firstTryLetter);
-            Console.WriteLine("firstTryCount: {0}", firstTryCount);
 
-            
             if(firstTryLetter == lastAdded) {
                 if(heap.Count == 0) {
                     return string.Empty;
