@@ -107,7 +107,7 @@
     
     - much better solutions
 
-75. Sort Colors
+75 . Sort Colors
     
     - using quick search variation
 
