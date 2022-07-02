@@ -98,11 +98,21 @@
     - Other solutions
     
 621. Task Scheduler
+    
     - there's O(n) sol
+    
     - sol without hash table
 
 658. Find K Closest Elements
+    
     - much better solutions
 
 75. Sort Colors
+    
     - using quick search variation
+
+23 . Merge k Sorted Lists
+
+    - there is n lg k solution
+
+    - divide and conq solution
