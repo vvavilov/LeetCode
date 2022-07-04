@@ -119,3 +119,6 @@
     
 378. Kth Smallest Element in a Sorted Matrix
     - dac solution, lg n k solution
+
+230. Kth Smallest Element in a BST
+    - write easier traversal
