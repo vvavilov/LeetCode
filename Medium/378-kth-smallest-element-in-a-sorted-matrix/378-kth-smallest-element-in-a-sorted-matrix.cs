@@ -15,7 +15,11 @@ public class Solution {
             for(int i = 0; i < n; i++) {
                 var rowPos = rowPointers[i];
                 
-                if(i > 0 && rowPos == rowPointers[i-1] || rowPos == n) {
+                // if(i > 0 && rowPos == rowPointers[i-1] || rowPos == n) {
+                //     continue;
+                // }
+                
+                if(rowPos == n) {
                     continue;
                 }
                 
