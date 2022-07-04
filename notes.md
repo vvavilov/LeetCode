@@ -116,3 +116,6 @@
     - there is n lg k solution
 
     - divide and conq solution
+    
+378. Kth Smallest Element in a Sorted Matrix
+    - dac solution, lg n k solution
