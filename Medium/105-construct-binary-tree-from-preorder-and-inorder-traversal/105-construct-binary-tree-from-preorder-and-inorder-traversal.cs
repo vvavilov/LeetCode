@@ -13,22 +13,21 @@
  */
 public class Solution {
     private ParentSource parents;
-    private int[] inorder;
+    private NodePositionSource positionSource;
     
     public TreeNode BuildTree(int[] preorder, int[] inorder) {
         parents = new ParentSource(preorder);
-        this.inorder = inorder;
+        positionSource = new NodePositionSource(inorder);
         return BuildSubtree(0, inorder.Length - 1);
     }
     
     private TreeNode BuildSubtree(int leftPos, int rightPos) {
-        Console.WriteLine("subtree: {0}, {1}", leftPos, rightPos);
         if(rightPos < leftPos) {
             return null;
         }
         
         var parent = parents.Next;
-        var posOfParent = FindInorderPosition(leftPos, rightPos, parent);
+        var posOfParent = positionSource.GetPosition(parent);
         
         var parentNode = new TreeNode(parent);
         
@@ -37,15 +36,19 @@ public class Solution {
         
         return parentNode;
     }
+}
+
+public class NodePositionSource {
+    Dictionary<int, int> dict = new();
     
-    private int FindInorderPosition(int left, int right, int value) {
-        for(int i = left; i <= right; i++) {
-            if(inorder[i] == value) {
-                return i;
-            }
+    public NodePositionSource(int[] nodes) {
+        for(int i = 0; i < nodes.Length; i++) {
+            dict.Add(nodes[i], i);
         }
-        
-        throw new Exception("node is not found");
+    }
+    
+    public int GetPosition(int nodeValue) {
+        return dict[nodeValue];
     }
 }
 
