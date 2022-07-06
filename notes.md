@@ -118,11 +118,14 @@
     - divide and conq solution
     
 378. Kth Smallest Element in a Sorted Matrix
+
 379. 
     - dac solution, lg n k solution
 
 230. Kth Smallest Element in a BST
+
 231. 
+    
     - write easier traversal
 
 973. K Closest Points to Origin
@@ -132,4 +135,5 @@
     - binary search
 
 437. Path Sum III
+438. 
     - rewrite with O(n)
