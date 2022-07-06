@@ -34,10 +34,11 @@ public class Solution {
             parents.Push(newNode);
         }
         
-        while(parents.Count > 1) {
-            parents.Pop();
+        TreeNode stackBottom = null;
+        while(parents.Count > 0) {
+            stackBottom = parents.Pop();
         }
         
-        return parents.Pop().right;
+        return stackBottom.right;
     }
 }
