@@ -18,9 +18,9 @@ public class Solution {
         }
         
         Stack<TreeNode> parents = new();
-        parents.Push(new TreeNode(nums[0]));
+        parents.Push(new TreeNode(Int32.MaxValue));
         
-        for(int i = 1; i < nums.Length; i++) {
+        for(int i = 0; i < nums.Length; i++) {
             var newNode = new TreeNode(nums[i]);
             var prevNode = parents.Pop();
             
@@ -28,21 +28,16 @@ public class Solution {
                 prevNode = parents.Pop();
             }
             
-            if(prevNode.val < newNode.val) {
-                newNode.left = prevNode;
-                parents.Push(newNode);
-            } else {
-                newNode.left = prevNode.right;
-                prevNode.right = newNode;
-                parents.Push(prevNode);
-                parents.Push(newNode);
-            }
+            newNode.left = prevNode.right;
+            prevNode.right = newNode;
+            parents.Push(prevNode);
+            parents.Push(newNode);
         }
         
         while(parents.Count > 1) {
             parents.Pop();
         }
         
-        return parents.Pop();
+        return parents.Pop().right;
     }
 }
