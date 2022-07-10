@@ -135,5 +135,10 @@
     - binary search
 
 437. Path Sum III
+
 438. 
     - rewrite with O(n)
+
+378. Kth Smallest Element in a Sorted Matrix
+
+    - binary search
