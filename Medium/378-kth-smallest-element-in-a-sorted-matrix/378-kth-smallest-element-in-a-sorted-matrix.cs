@@ -6,7 +6,6 @@ public class Solution {
         
         while(k-- > 0) {
             item = queue.Dequeue();
-            Console.WriteLine("{0}, {1}", item.row, item.column);
         
             (int row, int column) next = (item.row, item.column + 1);
             
