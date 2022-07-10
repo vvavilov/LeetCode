@@ -2,7 +2,6 @@ public class Solution {
     public int KthSmallest(int[][] matrix, int k) {
         var queue = CreateQueueWithFirstColumnValues(matrix, k);
         (int row, int column) item = (0, 0);
-        var itemsCount = k;
         
         while(k-- > 0) {
             item = queue.Dequeue();
@@ -15,10 +14,6 @@ public class Solution {
             
             var nextValue = matrix[next.row][next.column];
             queue.Enqueue(next, nextValue);
-            
-            // if(queue.Count > itemsCount) {
-                // queue.Dequeue();
-            // };
         }
         
         return matrix[item.row][item.column];
