@@ -16,9 +16,9 @@ public class Solution {
             var nextValue = matrix[next.row][next.column];
             queue.Enqueue(next, nextValue);
             
-            if(queue.Count > itemsCount) {
-                queue.Dequeue();
-            };
+            // if(queue.Count > itemsCount) {
+                // queue.Dequeue();
+            // };
         }
         
         return matrix[item.row][item.column];
