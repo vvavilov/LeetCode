@@ -4,8 +4,6 @@ public class Solution {
         
         var firstPos = 0;
         var secondPos = 0;
-        firstList = firstList.OrderBy(x => x[0]).ToArray();
-        secondList = secondList.OrderBy(x => x[0]).ToArray();
         
         while(firstPos < firstList.Length && secondPos < secondList.Length) {
             var firstInterval = firstList[firstPos];
