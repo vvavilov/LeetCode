@@ -142,3 +142,6 @@
 378. Kth Smallest Element in a Sorted Matrix
 
     - binary search
+
+56 . Merge Intervals
+    - via tree
