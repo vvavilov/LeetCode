@@ -3,12 +3,7 @@ public class Solution {
         if(nums.Length == 0) {
             return -1;
         }
-        
-        if(nums[nums.Length - 1] >= nums[0]) {
-            return BinarySearch(nums, target, 0, nums.Length - 1);
-        }
-        
-
+      
         var left = 0;
         var right = nums.Length - 1;
         var first = nums[0];
@@ -23,11 +18,17 @@ public class Solution {
         }
         
         var splitPoint = left;
-        if(target < first) {
-            return BinarySearch(nums, target, splitPoint, nums.Length - 1);
+        
+        left = 0;
+        right = nums.Length - 1;
+       
+        if(target >= first) {
+            right = splitPoint;
         } else {
-            return BinarySearch(nums, target, 0, splitPoint - 1);
+            left = splitPoint;
         }
+        
+        return BinarySearch(nums, target, left, right);
     }
     
     private int BinarySearch(int[] nums, int target, int left, int right) {
