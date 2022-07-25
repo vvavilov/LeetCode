@@ -2,36 +2,38 @@ public class Solution {
     public IList<int> PartitionLabels(string s) {
         int pos = 0;
         
-        var lastOccurence = new int[26];
+        var lastOccurence = new LettersDictionary<int>();
         
         for(int i = 0; i < s.Length; i++) {
-            lastOccurence[s[i] - 'a'] = i;
+            lastOccurence.Set(s[i], i);
         }
         
         List<int> result = new();
+        var start = 0;
+        var end = 0;
         
-        while(pos < s.Length) {         
-            var intervalEnd = ExpandInterval(s, pos, pos, lastOccurence);
-            result.Add(intervalEnd - pos + 1);
-            pos = intervalEnd + 1;
+        for(int i = 0; i < s.Length; i++) {
+            end = Math.Max(end, lastOccurence.Get(s[i]));
+            
+            if(end == i) {
+                result.Add(end - start + 1);
+                start = i + 1;
+            }
         }
         
         return result;
         
     }
+}
+
+public class LettersDictionary<TValue> {
+    private TValue[] impl = new TValue[26];
     
-    private int ExpandInterval(string s, int start, int end, int[] lastOccurence) {
-        var endSoFar = end;
-        
-        for(int i = start; i <= endSoFar; i++) {
-            endSoFar = Math.Max(endSoFar, lastOccurence[s[i] - 'a']);
-            
-            if(endSoFar == s.Length - 1) {
-                break;
-            }
-        }
-        
-        return endSoFar;
+    public void Set(char key, TValue value) {
+        impl[key - 'a'] = value;
     }
     
+    public TValue Get(char key) {
+        return impl[key - 'a'];
+    }
 }
