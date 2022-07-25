@@ -16,6 +16,7 @@ public class Solution {
         if(root == null) {
             return;
         }
+
         Traverse(root);
     }
     
