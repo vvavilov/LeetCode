@@ -28,6 +28,7 @@ public class Solution {
             return node;
         }
         
+        
         if(left != null) {
             node.right = left;
             node = Traverse(left);
