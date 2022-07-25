@@ -2,10 +2,16 @@ public class Solution {
     public IList<int> PartitionLabels(string s) {
         int pos = 0;
         
+        var lastOccurence = new int[26];
+        
+        for(int i = 0; i < s.Length; i++) {
+            lastOccurence[s[i] - 'a'] = i;
+        }
+        
         List<int> result = new();
         
         while(pos < s.Length) {         
-            var intervalEnd = ExpandInterval(s, pos, pos);
+            var intervalEnd = ExpandInterval(s, pos, pos, lastOccurence);
             result.Add(intervalEnd - pos + 1);
             pos = intervalEnd + 1;
         }
@@ -14,13 +20,11 @@ public class Solution {
         
     }
     
-    private int ExpandInterval(string s, int start, int end) {
+    private int ExpandInterval(string s, int start, int end, int[] lastOccurence) {
         var endSoFar = end;
         
         for(int i = start; i <= endSoFar; i++) {
-            // What if end of string is reached?
-            var currentEnd = FindLastOccurenceOfSame(s, i);
-            endSoFar = Math.Max(endSoFar, currentEnd);
+            endSoFar = Math.Max(endSoFar, lastOccurence[s[i] - 'a']);
             
             if(endSoFar == s.Length - 1) {
                 break;
@@ -30,15 +34,4 @@ public class Solution {
         return endSoFar;
     }
     
-    private int FindLastOccurenceOfSame(string s, int pos) {
-        var last = pos;
-        
-        for(int i = pos + 1; i < s.Length; i++) {
-            if(s[i] == s[pos]) {
-                last = i;
-            }    
-        }
-        
-        return last;
-    }
 }
