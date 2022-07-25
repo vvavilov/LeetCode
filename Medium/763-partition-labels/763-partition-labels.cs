@@ -21,6 +21,10 @@ public class Solution {
             // What if end of string is reached?
             var currentEnd = FindLastOccurenceOfSame(s, i);
             endSoFar = Math.Max(endSoFar, currentEnd);
+            
+            if(endSoFar == s.Length - 1) {
+                break;
+            }
         }
         
         return endSoFar;
