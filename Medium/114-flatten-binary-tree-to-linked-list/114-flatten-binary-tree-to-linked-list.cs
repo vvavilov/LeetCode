@@ -25,11 +25,6 @@ public class Solution {
         var right = node.right;
         node.left = null;
         
-        if(left == null && right == null) {
-            return node;
-        }
-        
-        
         if(left != null) {
             node.right = left;
             node = Traverse(left);
