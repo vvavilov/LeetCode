@@ -1,3 +1,11 @@
+// public class SolutionStackWithNoMemory {
+//     public int[] DailyTemperatures(int[] tmps) {
+//         var result = new int[tmps.Length];
+        
+//     }
+// }
+
+
 public class Solution {
     public int[] DailyTemperatures(int[] tmps) {
         Stack<(int value, int index)> pending = new();    
@@ -12,11 +20,6 @@ public class Solution {
             }
             
             pending.Push((cur, i));
-        }
-        
-        while(pending.Count > 0) {
-            var prev = pending.Pop();
-            result[prev.index] = 0;
         }
         
         return result;
