@@ -25,10 +25,8 @@ public class Solution {
         var result = new int[max + 1];
         
         profit.TryGetValue(1, out result[1]);
-        result[2] = Math.Max(profit.TryGetValue(2, out var val2) ? val2 : 0, result[1]);
         
-        
-        for(int i = 3; i <= max; i++) {
+        for(int i = 2; i <= max; i++) {
             var cur = profit.TryGetValue(i, out var value) ? value : 0;
             var maxSoFar = Math.Max(result[i - 2] + cur, result[i - 1]);
             result[i] = maxSoFar;
