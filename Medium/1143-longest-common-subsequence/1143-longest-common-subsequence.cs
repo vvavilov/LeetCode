@@ -5,7 +5,8 @@ public class Solution {
         hash = new int[text1.Length][];
         
         for(int i = 0; i < hash.Length; i++) {
-            hash[i] = new int[text2.Length];    
+            hash[i] = new int[text2.Length];
+            Array.Fill(hash[i], -1);
         }
         
         return TopDown(text1, text2, 0, 0);    
@@ -16,7 +17,7 @@ public class Solution {
             return 0;
         }
         
-        if(hash[pos1][pos2] != 0) {
+        if(hash[pos1][pos2] != -1) {
             return hash[pos1][pos2];
         }
         
