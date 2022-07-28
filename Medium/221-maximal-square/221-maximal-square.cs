@@ -9,34 +9,43 @@ public class Solution {
             Array.Fill(dp[i], -1);
         }
         
-        var max = 0;
-
+        var maxSoFar = 0;
+        
         for(int i = 0; i < matrix.Length; i++) {
-            for(int j = 0; j < matrix[0].Length; j++) {
-                max = Math.Max(max, TopDown(matrix, i, j, dp));
+            dp[i][0] = matrix[i][0] == '0' ? 0 : 1;
+            
+            if(dp[i][0] == 1) {
+                maxSoFar = 1;
             }
         }
         
-        return max * max;
-    }
-    
-    private int TopDown(char[][] matrix, int i, int j, int[][] dp) {
-        var val = matrix[i][j];
+        for(int i = 0; i < matrix[0].Length; i++) {
+            dp[0][i] = matrix[0][i] == '0' ? 0 : 1;
+            
+            if(dp[0][i] == 1) {
+                maxSoFar = 1;
+            }
+        }
+        
+        var max = 0;
 
-        if(dp[i][j] != -1) {
-            return dp[i][j];
+        for(int i = 1; i < matrix.Length; i++) {
+            for(int j = 1; j < matrix[0].Length; j++) {
+                if(matrix[i][j] == '0') {
+                    dp[i][j] = 0;
+                    continue;
+                }
+                
+                var top = dp[i - 1][j];
+                var left =  dp[i][j - 1];
+                var topLeft = dp[i - 1][j - 1];
+                
+                dp[i][j] = 1 + Math.Min(Math.Min(top, left), topLeft);
+                
+                maxSoFar = Math.Max(maxSoFar, dp[i][j]);
+            }
         }
         
-        if(i == 0 || j == 0 || val == '0') {
-            dp[i][j] = val == '0' ? 0 : 1;
-            return dp[i][j];
-        }
-        
-        var top = TopDown(matrix, i - 1, j, dp);
-        var left = TopDown(matrix, i, j - 1, dp);
-        var right = TopDown(matrix, i - 1, j - 1, dp);
-        
-        dp[i][j] = 1 + Math.Min(Math.Min(top, left), right);
-        return dp[i][j];
+        return maxSoFar * maxSoFar;
     }
 }
