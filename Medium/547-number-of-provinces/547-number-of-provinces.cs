@@ -60,8 +60,8 @@ public class DisjointSet {
     }
     
     public int UnionsCount() {
-        
         var count = 0;
+        
         for(int i = 0; i < connections.Length; i++) {
             if(i == connections[i]) {
                 count++;
