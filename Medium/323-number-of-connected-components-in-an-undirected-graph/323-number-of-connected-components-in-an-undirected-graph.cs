@@ -1,13 +1,15 @@
 public class Solution {
     public int CountComponents(int n, int[][] edges) {
         var roots = new int[n];
+        var ranks = new int[n];
         
         for(int i = 0; i < roots.Length; i++) {
             roots[i] = i;
+            ranks[i] = 1;
         }
         
         foreach(var edge in edges) {
-            Union(roots, edge[0], edge[1]);
+            Union(roots, ranks, edge[0], edge[1]);
         }
         
         return SetsCount(roots);
@@ -36,7 +38,7 @@ public class Solution {
         return i;
     }
     
-    public void Union(int[] roots, int i, int j) {
+    public void Union(int[] roots, int[] ranks, int i, int j) {
         // Ranking
         var leftRoot = Root(roots, j);
         var rightRoot = Root(roots, i);
@@ -45,7 +47,14 @@ public class Solution {
             return;
         }
         
-        roots[rightRoot] = leftRoot;
+        if(ranks[rightRoot] < ranks[leftRoot]) {
+            roots[rightRoot] = leftRoot;
+        } else if(ranks[rightRoot] > ranks[leftRoot]) {
+            roots[leftRoot] = rightRoot;
+        } else {
+            ranks[leftRoot] += 1;
+            roots[rightRoot] = leftRoot;
+        }
     }
     
     private void Visit(int node, bool[] visited, List<int>[] graph) {
