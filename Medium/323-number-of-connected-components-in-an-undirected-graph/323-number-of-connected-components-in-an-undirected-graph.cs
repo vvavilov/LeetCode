@@ -29,6 +29,7 @@ public class Solution {
     private int Root(int[] roots, int i) {
         // Compression
         while(roots[i] != i) {
+            roots[i] = roots[roots[i]];
             i = roots[i];
         }
         
