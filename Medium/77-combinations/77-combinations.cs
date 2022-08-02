@@ -1,21 +1,21 @@
 public class Solution {
     public IList<IList<int>> Combine(int n, int k) {
         List<IList<int>> result = new();
-        Combine(n, k, 1, result, new LinkedList<int>());
-        
+        Backtrack(n, 1, k, new LinkedList<int>(), result);
         return result;
     }
     
-    private void Combine(int n, int k, int curN, IList<IList<int>> result, LinkedList<int> combination) {
+    private void Backtrack(int n, int start, int k, LinkedList<int> cur, List<IList<int>> result) {
         if(k == 0) {
-            result.Add(new List<int>(combination));
+            result.Add(new List<int>(cur));
             return;
         }
         
-        for(int i = curN; i <= n - k + 1; i++) {
-            combination.AddLast(i);
-            Combine(n, k - 1, i + 1, result, combination);
-            combination.RemoveLast();
+        for(int i = start; i <= n; i++) {
+            cur.AddLast(i);
+            Backtrack(n, i + 1, k - 1, cur, result);
+            cur.RemoveLast();
         }
+        
     }
 }
