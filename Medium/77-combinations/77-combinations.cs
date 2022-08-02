@@ -6,14 +6,14 @@ public class Solution {
     }
     
     private void Backtrack(int n, int start, int k, LinkedList<int> cur, List<IList<int>> result) {
-        if(k == 0) {
+        if(cur.Count == k) {
             result.Add(new List<int>(cur));
             return;
         }
         
         for(int i = start; i <= n; i++) {
             cur.AddLast(i);
-            Backtrack(n, i + 1, k - 1, cur, result);
+            Backtrack(n, i + 1, k, cur, result);
             cur.RemoveLast();
         }
         
