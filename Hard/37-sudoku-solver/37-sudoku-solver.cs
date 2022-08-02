@@ -1,27 +1,18 @@
 public class Solution {
-    private bool[][] filledCols;
-    private bool[][] filledRows;
-    private bool[][] filledQuadrants;
+    private static int n = 9;
+    private bool[,] cols = new bool[n,n + 1];
+    private bool[,] rows = new bool[n,n + 1];
+    private bool[,] quadrants = new bool[n,n + 1];
     
     public void SolveSudoku(char[][] board) {
-        filledCols = new bool[board.Length][];
-        filledRows = new bool[board.Length][];
-        filledQuadrants = new bool[board.Length][];
-        
         for(int i = 0; i < board.Length; i++) {
-            filledRows[i] = new bool[10];
-
-            for(int j = 0; j < board.Length; j++) {
-                filledCols[j] = filledCols[j] ?? new bool[10];
-                var quadrantNumber = QuadrantNumber(i, j);
-                filledQuadrants[quadrantNumber] = filledQuadrants[quadrantNumber] ?? new bool[10];
-                
+            for(int j = 0; j < board.Length; j++) {                
                 if(Char.IsDigit(board[i][j])) {
                     var digit = (int) Char.GetNumericValue(board[i][j]);
-
-                    filledCols[j][digit] = true;
-                    filledRows[i][digit] = true;
-                    filledQuadrants[quadrantNumber][digit] = true;
+                    var quadrantNumber = QuadrantNumber(i, j);
+                    cols[j,digit] = true;
+                    rows[i,digit] = true;
+                    quadrants[quadrantNumber,digit] = true;
                 }
             }
         }
@@ -72,30 +63,30 @@ public class Solution {
     
     private void Invalidate(char[][] board, int y, int x, int digit) {
         board[y][x] = '.';
-        filledRows[y][digit] = false;
-        filledCols[x][digit] = false;
-        filledQuadrants[QuadrantNumber(y, x)][digit] = false;
+        rows[y,digit] = false;
+        cols[x,digit] = false;
+        quadrants[QuadrantNumber(y, x),digit] = false;
 
     }
     
     private void Try(char[][] board, int y, int x, int digit) {
         board[y][x] = (char)('0' + digit);
-        filledRows[y][digit] = true;
-        filledCols[x][digit] = true;
-        filledQuadrants[QuadrantNumber(y, x)][digit] = true;
+        rows[y,digit] = true;
+        cols[x,digit] = true;
+        quadrants[QuadrantNumber(y, x),digit] = true;
 
     }
     
     private bool IsValid(int y, int x, int digit) {
-        if(filledRows[y][digit]) {
+        if(rows[y,digit]) {
             return false;
         }
         
-        if(filledCols[x][digit]) {
+        if(cols[x,digit]) {
             return false;
         }
         
-        if(filledQuadrants[QuadrantNumber(y, x)][digit]) {
+        if(quadrants[QuadrantNumber(y, x),digit]) {
             return false;
         }
         
