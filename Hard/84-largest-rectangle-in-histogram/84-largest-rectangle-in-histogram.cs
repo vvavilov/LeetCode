@@ -11,12 +11,6 @@ public class Solution {
                 continue;
             }
             
-            if(visited.Peek().height == h) {
-                var prev = visited.Pop();
-                visited.Push((h, prev.count + 1));
-                continue;
-            }
-            
             var accumulatedCount = 0;
 
             while(visited.Count > 0 && visited.Peek().height >= h) {
