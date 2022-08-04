@@ -2,9 +2,7 @@ public class Solution {
     public int MirrorReflection(int p, int q) {
         double roomsVerticalCount = 0;
         double roomsHorizontalCount = 1;
-        
-        // 30, 20
-        
+
         while(roomsVerticalCount * p / ( roomsHorizontalCount  * q) != 1) {
             roomsVerticalCount++;
             
@@ -18,12 +16,6 @@ public class Solution {
         var horizontalFlipsCount = roomsHorizontalCount - 1;
         var verticalFlipped = verticalFlipsCount % 2 != 0;
         var horizontalFlipped = horizontalFlipsCount % 2 != 0;
-        
-        Console.WriteLine(verticalFlipsCount);
-        Console.WriteLine(horizontalFlipsCount);
-
-        Console.WriteLine(verticalFlipped);
-        Console.WriteLine(horizontalFlipped);
         
         if(!verticalFlipped && !horizontalFlipped) {
             return 1;
