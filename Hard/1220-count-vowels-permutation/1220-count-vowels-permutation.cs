@@ -25,8 +25,6 @@ public class Solution {
             nextCount[x] = 0;
             
             foreach(var next in Next(x)) {
-                if(Int64.MaxValue - nextCount[x] <= counts[next]) { Console.WriteLine("more than long"); } ;
-                
                 nextCount[x] += counts[next];
             }
             
