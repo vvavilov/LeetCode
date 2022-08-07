@@ -1,5 +1,24 @@
 public class Solution {
     public int NumTrees(int n) {
+        // We don't actually nead exact trees, 2 trees of the same number of nodes give the same count;
+        var countForSize = new int[n + 1];
+        
+        countForSize[0] = 1;
+        countForSize[1] = 1;
+        
+        for(int length = 2; length <= n; length++) {
+            for(int i = 0; i < length; i++) {
+                var leftSize = i;
+                var rightSize = length - 1 - leftSize;
+                
+                countForSize[length] += countForSize[leftSize] * countForSize[rightSize];
+            }
+        }
+        
+        return countForSize[n];
+    }
+
+    public int NumTreesByBuildingIt(int n) {
         var dp = new int[n][];
         
         for(int i = 0; i < n; i++) {
