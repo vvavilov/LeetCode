@@ -46,9 +46,8 @@ public class Solution {
         if(num == 0) {
             return "Zero";
         }
-
-        Stack<string> parts = new();
         
+        var result = "";
         var rankCount = 0;
         
         while(num > 0) {
@@ -58,20 +57,14 @@ public class Solution {
             var rankRepresentation = RankToString(rank, rankCount);
             
             if(rankRepresentation != "") {
-                parts.Push(rankRepresentation);            
+                result = rankRepresentation + " " + result;
+       
             }
 
             rankCount++;
         }
         
-        var stringBuilder = new StringBuilder();
-        
-        while(parts.Count > 0) {
-            stringBuilder.Append(parts.Pop());
-            stringBuilder.Append(" ");
-        }
-        
-        return stringBuilder.ToString().Trim();
+        return result.Trim();
     }
 
     public string GetRankName(int rank) {
