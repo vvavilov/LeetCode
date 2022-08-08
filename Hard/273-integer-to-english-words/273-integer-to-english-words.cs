@@ -52,24 +52,10 @@ public class Solution {
         var rankCount = 0;
         
         while(num > 0) {
-            var rankBuilder = new StringBuilder();
             var rank = num % 1000;    
             num /= 1000;
             
-            var rankString = RankToString(rank);
-            
-            if(rankString != "") {
-                rankBuilder.Append(rankString);
-            }
-            
-            var rankName = GetRankName(rankCount);
-            
-            if(rankString != "" && rankName != "") {
-                rankBuilder.Append(" ");
-                rankBuilder.Append(rankName);
-            }
-            
-            var rankRepresentation = rankBuilder.ToString();
+            var rankRepresentation = RankToString(rank, rankCount);
             
             if(rankRepresentation != "") {
                 parts.Push(rankRepresentation);            
@@ -87,7 +73,7 @@ public class Solution {
         
         return stringBuilder.ToString().Trim();
     }
-    
+
     public string GetRankName(int rank) {
         if(rank == 0) {
             return "";
@@ -104,7 +90,7 @@ public class Solution {
         return digits[x];
     }
     
-    private string RankToString(int x) {
+    private string RankToString(int x, int rankCount) {
         var result = new StringBuilder();
         var rank = x / 100;
         
@@ -121,6 +107,13 @@ public class Solution {
             }
 
             result.Append(decimals);
+        }
+        
+        var rankName = GetRankName(rankCount);
+
+        if(result.Length > 0 && rankName != "") {
+            result.Append(" ");
+            result.Append(rankName);
         }
         
         return result.ToString();
