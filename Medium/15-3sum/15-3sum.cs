@@ -28,9 +28,9 @@ public class Solution {
                     
                 }
                 
-                if(!set.Contains(nums[j])) {
+                // if(!set.Contains(nums[j])) {
                     set.Add(nums[j]);
-                }
+                // }
             }
         }
         
