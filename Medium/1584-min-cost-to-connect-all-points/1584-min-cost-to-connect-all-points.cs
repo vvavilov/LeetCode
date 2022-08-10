@@ -9,15 +9,9 @@ public class Solution {
         var priorityQueue = new PriorityQueue<int, int>();        
         var processedCount = 0;
         var total = 0;
-
-        visited[0] = true;
-
-        for(int i = 0; i < points.Length; i++) {
-            var distanceFromFirst = Distance(points[0], points[i]);
-            priorityQueue.Enqueue(i, distanceFromFirst);
-        }
+        priorityQueue.Enqueue(0, 0);
         
-        while(processedCount < points.Length - 1) {
+        while(processedCount < points.Length) {
             priorityQueue.TryDequeue(out var node, out var weight);
             
             if(visited[node]) {
