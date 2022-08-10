@@ -3,21 +3,19 @@ public class Solution {
         var graph = BuildGraph(n, pipes, wells);
         
         var queue = new PriorityQueue<int, int>();
-        var visited = new bool[n + 1];
-        var processedCount = 0;
+        var visited = new HashSet<int>();
         var total = 0;
         
         AttachNode(0, graph, queue, visited);
         
-        while(processedCount < n) {
+        while(visited.Count < n + 1) {
             queue.TryDequeue(out var node, out var weight);
             
-            if(visited[node]) {
+            if(visited.Contains(node)) {
                 continue;
             }
             
             total += weight;
-            processedCount++;
             AttachNode(node, graph, queue, visited);
         }
         
@@ -28,9 +26,9 @@ public class Solution {
         int node,
         IList<(int node, int weight)>[] graph,
         PriorityQueue<int, int> queue,
-        bool[] visited
+        HashSet<int> visited
     ) {
-        visited[node] = true;
+        visited.Add(node);
         
         foreach(var edge in graph[node]) {
             queue.Enqueue(edge.node, edge.weight);
