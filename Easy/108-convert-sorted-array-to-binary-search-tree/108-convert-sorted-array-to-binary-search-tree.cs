@@ -13,21 +13,24 @@
  */
 public class Solution {
     public TreeNode SortedArrayToBST(int[] nums) {
-        return BuildTree(nums, 0, nums.Length - 1);
-    }
-
-    private TreeNode BuildTree(int[] nums, int start, int end) {
-        if(end < start) {
+        if(nums.Length == 0) {
             return null;
         }
         
-        var mid = (end - start) / 2 + start;
+        return Recursive(nums, 0, nums.Length - 1);
+    }
+    
+    private TreeNode Recursive(int[] nums, int start, int end) {
+        if(start > end) {
+            return null;
+        }
         
-        var node = new TreeNode(nums[mid]);
-        node.left = BuildTree(nums, start, mid -1);
-        node.right = BuildTree(nums, mid+1, end);
+        var mid = ( end - start ) / 2 + start;
         
-        return node;
+        var root = new TreeNode(nums[mid]);
+        root.left = Recursive(nums, start, mid - 1);
+        root.right = Recursive(nums, mid + 1, end);
         
+        return root;
     }
 }
