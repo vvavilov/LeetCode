@@ -26,7 +26,7 @@ public class Solution {
                     curPos++;
                 }
                 
-                if(curPos < startArray.Length &&  startArray[curPos] == 'X') {
+                if(curPos < startArray.Length && startArray[curPos] == 'X') {
                     Swap(startArray, i, curPos);
                     continue;
                 }
