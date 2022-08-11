@@ -12,23 +12,23 @@
  * }
  */
 public class Solution {
-    public bool IsValidBST(TreeNode node) {
-        return IsValid(node);
-    }
-    
-    private bool IsValid(TreeNode node, int? minValue = null, int? maxValue = null) {
+    public bool IsValidBST(TreeNode node, int? min = null, int? max = null) {
         if(node == null) {
             return true;
         }
         
-        if(minValue is int min && node.val <= min) {
-            return false;
+        var validSelf = true;
+        
+        if(min != null && node.val <= min) {
+            validSelf = false;
         }
         
-        if(maxValue is int max && node.val >= max) {
-            return false;
+        if(max != null && node.val >= max) {
+            validSelf = false;
         }
         
-        return IsValid(node.left, minValue, node.val) && IsValid(node.right, node.val, maxValue);
+        return validSelf
+            && IsValidBST(node.left, min, node.val)
+            && IsValidBST(node.right, node.val, max);
     }
 }
