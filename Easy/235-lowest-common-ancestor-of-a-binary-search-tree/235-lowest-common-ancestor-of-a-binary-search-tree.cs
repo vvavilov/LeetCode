@@ -5,18 +5,23 @@
  *     public TreeNode left;
  *     public TreeNode right;
  *     public TreeNode(int x) { val = x; }
+ * }
  */
 
 public class Solution {
-    public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        if(p.val > root.val && q.val > root.val) {
-            return LowestCommonAncestor(root.right, p, q);
+    public TreeNode LowestCommonAncestor(TreeNode node, TreeNode p, TreeNode q) {
+        if(node.val == p.val || node.val == q.val) {
+            return node;
         }
-
-        if(p.val < root.val && q.val < root.val) {
-            return LowestCommonAncestor(root.left, p, q);
+        
+        if(q.val > node.val && p.val > node.val) {
+            return LowestCommonAncestor(node.right, p, q);
         }
-
-        return root;
+        
+        if(q.val < node.val && p.val < node.val) {
+            return LowestCommonAncestor(node.left, p, q);
+        }
+        
+        return node;
     }
 }
