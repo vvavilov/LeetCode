@@ -1,4 +1,4 @@
-// 3 8 0 9 2 5
+// 3 8 2 5 0 9 2 6
 
 public class RLEIterator {
     private int current = 0;
@@ -9,39 +9,40 @@ public class RLEIterator {
     }
     
     public int Next(int n) {
-        if(current >= encoding.Length) {
+        while(HasNext() && n > CurrentCount) {
+            n -= CurrentCount;
+            MoveCurrent();
+        }
+
+        if(!HasNext()) {
             return -1;
         }
 
-        while(n > CurrentCount()) {
-            n -= CurrentCount();
+        var currentValue = CurrentValue;
+        CurrentCount -= n;
 
-            if(!GoNext()) {
-                return -1;
-            }
+        if(CurrentCount == 0) {
+            MoveCurrent();
         }
 
-        if(CurrentCount() > n) {
-            encoding[current] -= n;
-            return encoding[current + 1];
-        }
-
-        if(CurrentCount() == n) {
-            var currentElement = encoding[current + 1];
-            GoNext();
-            return currentElement;
-        }
-
-        return -1;
+        return currentValue;
     }
 
-    private int CurrentCount() {
-        return encoding[current];
-    }
-
-    private bool GoNext() {
-        current += 2;
+    private bool HasNext() {
         return current < encoding.Length;
+    }
+
+    private int CurrentCount {
+        get => encoding[current];
+        set => encoding[current] = value;
+    }
+
+    private int CurrentValue {
+        get => encoding[current + 1];
+    }
+
+    private void MoveCurrent() {
+        current += 2;
     }
 }
 
