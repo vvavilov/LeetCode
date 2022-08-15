@@ -1,36 +1,39 @@
 public class ProductOfNumbers {
-    private List<int> storage = new List<int>();
-    private List<int> product = new List<int>();
-
+    private List<int> storage = new();
+    private int lastZeroPos = -1;
+    
     public ProductOfNumbers() {
         
     }
     
     public void Add(int num) {
-        product = new List<int>();
-        storage.Add(num);
+        if(num == 0) {
+            storage.Add(1);
+            lastZeroPos = storage.Count - 1;
+            return;
+        }
+        
+        if(storage.Count == 0) {
+            storage.Add(num);
+            return;
+        }
+
+        storage.Add(storage[storage.Count - 1] * num);
     }
     
-    // storage: 1 2 3 4 5
-    // product: 5 20 60
-    // 3 , 3, 4
-
     public int GetProduct(int k) {
-        var precalculatedCount = product.Count;
-
-        if(k <= precalculatedCount) {
-            return product[k - 1];
+        var withoutZerosCount = storage.Count - lastZeroPos - 1;
+        
+        if(k > withoutZerosCount) {
+            return 0;
         }
-
-        var prevProduct = precalculatedCount > 0 ? product[product.Count - 1] : 1;
-
-        for(int i = 0; i < k - precalculatedCount; i++) {
-            var element = storage[storage.Count - 1 - precalculatedCount - i];
-            prevProduct *= element;
-            product.Add(prevProduct);
+        
+        if(k == storage.Count) {
+            return storage[storage.Count - 1];
         }
-
-        return prevProduct;
+                
+        return storage[storage.Count - 1] / storage[storage.Count - k - 1];
+        
     }
 }
 
@@ -40,3 +43,4 @@ public class ProductOfNumbers {
  * obj.Add(num);
  * int param_2 = obj.GetProduct(k);
  */
+
