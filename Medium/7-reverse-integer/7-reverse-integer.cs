@@ -1,7 +1,7 @@
 public class Solution {
     public int Reverse(int x) {
         var isNegative = x < 0;
-        var reversed = isNegative ? -0 : 0;
+        var reversed = 0;
 
         while(x != 0) {
             var oneMoreNumber = x % 10;
