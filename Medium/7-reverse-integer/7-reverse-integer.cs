@@ -8,19 +8,13 @@ public class Solution {
             x = x / 10;
             
             if(isNegative) {
-                
                 if((Int32.MinValue - oneMoreNumber) / 10 > reversed) {
                     return 0;
                 }
-                
-                reversed = reversed * 10 + oneMoreNumber;
-                continue;
-            }
-            
-            if((Int32.MaxValue - oneMoreNumber) / 10 < reversed) {
+            } else if((Int32.MaxValue - oneMoreNumber) / 10 < reversed) {
                 return 0;
             }
-            
+
             reversed = reversed * 10 + oneMoreNumber;
         }
         
