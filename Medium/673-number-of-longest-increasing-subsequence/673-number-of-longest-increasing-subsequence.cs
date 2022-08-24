@@ -1,4 +1,55 @@
 public class Solution {
+    public int FindNumberOfLIS(int[] nums) {
+        Dictionary<int, (int Length, int Count)> dp = new();
+        
+        if(nums.Length == 0) {
+            return 0;
+        }
+
+        dp[0] = (1, 1);
+        
+        for(int i = 1; i < nums.Length; i++) {
+            dp[i] = (1, 1);
+            
+            for(int j = 0; j < i; j++) {
+                if(nums[j] >= nums[i]) {
+                    continue;
+                }
+                
+                UpdateMax(dp[j].Length + 1, dp[j].Count, i, dp);
+            }
+        }
+        
+        var maxLength = 0;
+        var maxCount = 0;
+        
+        foreach(var x in dp.Values) {
+            if(x.Length > maxLength) {
+                maxLength = x.Length;
+                maxCount = x.Count;
+            } else if(x.Length == maxLength) {
+                maxCount += x.Count;
+            }
+        }
+        
+        return maxCount;
+    }
+    
+    private void UpdateMax(int length, int count, int pos, Dictionary<int, (int Length, int Count)> dp) {
+        var cur = dp[pos];
+        
+        if(cur.Length == length) {
+            dp[pos] = (length, count + dp[pos].Count);
+            return;
+        }
+        
+        if(cur.Length < length) {
+            dp[pos] = (length, count);
+        }
+    }
+}
+
+public class SolutionTopDown {
     Dictionary<int, (int Length, int Count)> dp = new();
     
     public int FindNumberOfLIS(int[] nums) {
@@ -43,14 +94,14 @@ public class Solution {
         return dp[pos];
     }
     
-       private void UpdateMax(int length, int count, int pos, Dictionary<int, (int Length, int Count)> dp) {
+    private void UpdateMax(int length, int count, int pos, Dictionary<int, (int Length, int Count)> dp) {
         var cur = dp[pos];
-        
+
         if(cur.Length == length) {
             dp[pos] = (length, count + dp[pos].Count);
             return;
         }
-        
+
         if(cur.Length < length) {
             dp[pos] = (length, count);
         }
