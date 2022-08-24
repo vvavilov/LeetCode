@@ -9,7 +9,7 @@ public class Solution {
         
         for(int i = 1; i < nums.Length; i++) {
             if (sum < 0) {
-                maxVal = Math.Max(maxVal, sum);
+                // maxVal = Math.Max(maxVal, sum);
                 sum = nums[i];
             } else {
                 sum += nums[i];
