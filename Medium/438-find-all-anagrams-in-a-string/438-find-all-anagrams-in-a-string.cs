@@ -6,22 +6,20 @@ public class Solution {
             return result;
         }
         
-        var dict = InitDictionary(p);
-        ProcessFirstWindow(dict, s, p.Length);
+        var state = InitState(p);
+        ProcessFirstWindow(state, s, p.Length);
         
-        if(IsAnagram(dict)) {
+        if(IsAnagram(state)) {
             result.Add(0);
         }
         
         for(int i = 1; i <= s.Length - p.Length; i++) {
-            // Console.WriteLine(i);
-            dict[s[i - 1]]++;
+            Remove(state, s[i-1]);
             
             var newWindowValuePos = i + p.Length - 1;
-            dict.TryGetValue(s[newWindowValuePos], out var count);
-            dict[s[newWindowValuePos]] = count - 1;
+            Add(state, s[newWindowValuePos]);
             
-            if(IsAnagram(dict)) {
+            if(IsAnagram(state)) {
                 result.Add(i);
             }
         }
@@ -30,25 +28,35 @@ public class Solution {
         
     }
     
-    private void ProcessFirstWindow(Dictionary<char, int> dict, string s, int patternLength) {
+    private void ProcessFirstWindow(int[] state, string s, int patternLength) {
         foreach(var x in s.Take(patternLength)) {
-            dict.TryGetValue(x, out var count);
-            dict[x] = count - 1;
+            Add(state, x);
         }
     }
     
-    private bool IsAnagram(Dictionary<char, int> dict) {
-        return dict.Values.All(x => x == 0);
+    private void Add(int[] state, char c) {
+        state[Pos(c)]--;
     }
     
-    private Dictionary<char, int> InitDictionary(string p) {
-        Dictionary<char, int> result = new();
+    private void Remove(int[] state, char c) {
+        state[Pos(c)]++;
+    }
+    
+    private int Pos(char c) {
+        return (int)(c - 'a');
+    }
+    
+    private bool IsAnagram(int[] state) {
+        return state.All(x => x == 0);
+    }
+    
+    private int[] InitState(string p) {
+        var state = new int[26];
         
         foreach(var x in p) {
-            result.TryGetValue(x, out var count);
-            result[x] = count + 1;
+            Remove(state, x);
         }
         
-        return result;
+        return state;
     }
 }
