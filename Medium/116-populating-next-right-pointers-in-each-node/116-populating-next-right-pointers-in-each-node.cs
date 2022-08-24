@@ -22,58 +22,19 @@ public class Node {
 */
 
 public class Solution {
-    public Node Connect(Node node) {
-        if(node == null) {
-            return null;
-        }
-
-        ConnectDfs(node);
-        return node;
+    public Node Connect(Node root) {
+        Connect(root, null);
+        return root;
     }
     
-    private void ConnectDfs(Node node) {
-        if(node.left == null) {
+    private void Connect(Node node, Node next) {
+        if(node == null) {
             return;
         }
         
-        var left = node.left;
-        var right = node.right;
+        node.next = next;
         
-        left.next = right;
-        right.next = node.next?.left;
-        
-        ConnectDfs(left);
-        ConnectDfs(right);
-    }
-    
-    public Node ConnectBFS(Node root) {
-        if(root == null) {
-            return null;
-        }
-
-        Queue<Node> queue = new();
-        queue.Enqueue(root);
-        
-        while(queue.Count > 0) {
-            var levelCount = queue.Count;
-            Node next = null;
-            
-            for(var i = 0; i < levelCount; i++) {
-                var node = queue.Dequeue();
-                node.next = next;
-                next = node;
-                
-                if(node.right != null) {
-                    queue.Enqueue(node.right);
-                }
-                
-                if(node.left != null) {
-                    queue.Enqueue(node.left);
-                }
-            }
-        }
-        
-        return root;
-            
+        Connect(node.left, node.right);
+        Connect(node.right, node.next?.left);
     }
 }
