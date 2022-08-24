@@ -1,12 +1,15 @@
 public class Solution {
     public int FindNumberOfLIS(int[] nums) {
         Dictionary<int, (int Length, int Count)> dp = new();
-        
+
         if(nums.Length == 0) {
             return 0;
         }
 
         dp[0] = (1, 1);
+        var maxLength = 1;
+        var maxCount = 1;
+        
         
         for(int i = 1; i < nums.Length; i++) {
             dp[i] = (1, 1);
@@ -18,17 +21,12 @@ public class Solution {
                 
                 UpdateMax(dp[j].Length + 1, dp[j].Count, i, dp);
             }
-        }
-        
-        var maxLength = 0;
-        var maxCount = 0;
-        
-        foreach(var x in dp.Values) {
-            if(x.Length > maxLength) {
-                maxLength = x.Length;
-                maxCount = x.Count;
-            } else if(x.Length == maxLength) {
-                maxCount += x.Count;
+            
+            if(dp[i].Length > maxLength) {
+                maxLength = dp[i].Length;
+                maxCount = dp[i].Count;
+            } else if(dp[i].Length == maxLength) {
+                maxCount += dp[i].Count;
             }
         }
         
