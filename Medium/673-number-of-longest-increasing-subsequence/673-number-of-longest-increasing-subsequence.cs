@@ -1,15 +1,16 @@
 public class Solution {
-    public int FindNumberOfLIS(int[] nums) {
-        Dictionary<int, (int Length, int Count)> dp = new();
+    private (int Length, int Count)[] dp;
 
+    public int FindNumberOfLIS(int[] nums) {
         if(nums.Length == 0) {
             return 0;
         }
+        
+        dp = new (int Length, int Count)[nums.Length];
 
         dp[0] = (1, 1);
         var maxLength = 1;
         var maxCount = 1;
-        
         
         for(int i = 1; i < nums.Length; i++) {
             dp[i] = (1, 1);
@@ -19,7 +20,7 @@ public class Solution {
                     continue;
                 }
                 
-                UpdateMax(dp[j].Length + 1, dp[j].Count, i, dp);
+                UpdateMax(dp[j].Length + 1, dp[j].Count, i);
             }
             
             if(dp[i].Length > maxLength) {
@@ -33,7 +34,7 @@ public class Solution {
         return maxCount;
     }
     
-    private void UpdateMax(int length, int count, int pos, Dictionary<int, (int Length, int Count)> dp) {
+    private void UpdateMax(int length, int count, int pos) {
         var cur = dp[pos];
         
         if(cur.Length == length) {
