@@ -12,48 +12,41 @@
  * }
  */
 public class Solution {
-    private int count;
-
+    int callsCount = 0;
+    
     public int PathSum(TreeNode root, int targetSum) {
-        DfsPossibleSums(root, targetSum);
-        
-        return count;
+        var r =  Recursive(root, new List<int> {targetSum}, targetSum);
+        return r;
+
     }
     
-    public List<int> DfsPossibleSums(TreeNode node, int targetSum) {
+    private int Recursive(TreeNode node, List<int> targets, int target) {
         if(node == null) {
-            return new List<int>();
+            return 0;
         }
         
-        if(node.val == targetSum) {
-            count++;
-        }
+        var count = 0;
         
-        var leftSums = DfsPossibleSums(node.left, targetSum);
-        var rightSums = DfsPossibleSums(node.right, targetSum);
-        List<int> sums = new();
+        var childTargets = new List<int>();
 
-        foreach(var x in leftSums) {
-            var value = x + node.val;
-            
-            if(value == targetSum) {
+        foreach(var x in targets) {
+
+            if(x == node.val) {
                 count++;
             }
             
-            sums.Add(value);
-        }
-        
-        foreach(var x in rightSums) {
-            var value = x + node.val;
-            
-            if(value == targetSum) {
-                count++;
+            if(node.val > 0 && Int32.MinValue + node.val > x) {
+                continue;
             }
             
-            sums.Add(value);
+            childTargets.Add(x - node.val);
         }
         
-        sums.Add(node.val);
-        return sums;
+        childTargets.Add(target);
+        
+        count += Recursive(node.left, childTargets, target);
+        count += Recursive(node.right, childTargets, target);
+        
+        return count;
     }
 }
