@@ -1,32 +1,40 @@
 public class Solution {
     public bool CanPartition(int[] nums) {
         var sum = nums.Sum();
-        if(sum % 2 == 1) {
+        
+        if(sum % 2 != 0) {
             return false;
         }
         
-        var expectedSize = sum / 2;
-        
-        var result = new bool[nums.Length][];
-        for(int i = 0; i < nums.Length; i++) {
-            result[i] = new bool[sum + 1];
+        var dp = new bool?[nums.Length][];
+    
+        for(int i = 0; i < dp.Length; i++) {
+            dp[i] = new bool?[sum / 2 + 1];
         }
         
-        result[0][nums[0]] = true;
-        
-        for(int i = 1; i < nums.Length; i++) {
-            var prevStep = result[i-1];
-            var curStep = result[i];
-
-            for(int j = 0; j <= expectedSize; j++) {
-                curStep[nums[i]] = true;                
-                if(prevStep[j]) {
-                    curStep[j] = true;
-                    curStep[j + nums[i]] = true;
-                }
-            }
+        return DP(nums, 0, sum / 2, dp);
+    }
+    
+    private bool DP(int[] nums, int pos, int target, bool?[][] dp) {
+        if(target < 0) {
+            return false;
         }
         
-        return result.Any(step => step[expectedSize]);
+        if(target == 0) {
+            return true;
+        }
+        
+        if(pos == nums.Length) {
+            return false;
+        }
+        
+        if(dp[pos][target] is bool calculated) {
+            return calculated;
+        }
+        
+        var val = nums[pos];
+        
+        dp[pos][target] = DP(nums, pos + 1, target - val, dp) || DP(nums, pos + 1, target, dp);
+        return (bool)dp[pos][target];
     }
 }
