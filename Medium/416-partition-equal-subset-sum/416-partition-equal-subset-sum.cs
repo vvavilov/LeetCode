@@ -14,8 +14,6 @@ public class Solution {
         dp[0][0] = true;
         
         for(int i = 1; i < dp.Length; i++) {
-            Console.WriteLine("HERE " + i);
-
             dp[i] = new bool[target + 1];
             
             for(int j = 0; j <= target; j++) {
