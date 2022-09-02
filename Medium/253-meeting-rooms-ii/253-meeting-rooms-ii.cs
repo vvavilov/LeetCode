@@ -15,8 +15,6 @@ public class Solution {
         while(events.Count > 0) {
             var meetingEvent = events.Dequeue();
             
-            Console.WriteLine("event " + meetingEvent.type + " " + meetingEvent.id);
-            
             if(meetingEvent.type == EventType.End) {
                 meetings.Remove(meetingEvent.id);
                 continue;
