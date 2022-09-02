@@ -1,26 +1,24 @@
 public class Solution {
     public int MinMeetingRooms(int[][] intervals) {
-        
-        
-        var events = new PriorityQueue<(int id, EventType type), (EventType type, int time)>(new ByTimeAndTypeComparer());
+        var events = new PriorityQueue<int, (EventType type, int time)>(new ByTimeAndTypeComparer());
         
         for(int i = 0; i < intervals.Length; i++) {
-            events.Enqueue((i, EventType.Start), (EventType.Start, intervals[i][0]));
-            events.Enqueue((i, EventType.End), (EventType.End, intervals[i][1]));
+            events.Enqueue(i, (EventType.Start, intervals[i][0]));
+            events.Enqueue(i, (EventType.End, intervals[i][1]));
         }
         
         HashSet<int> meetings = new();
         var simultaniousMeetingsCount = 0;
         
         while(events.Count > 0) {
-            var meetingEvent = events.Dequeue();
+            events.TryDequeue(out var id, out var meetingEvent);
             
             if(meetingEvent.type == EventType.End) {
-                meetings.Remove(meetingEvent.id);
+                meetings.Remove(id);
                 continue;
             } 
 
-            meetings.Add(meetingEvent.id);
+            meetings.Add(id);
             simultaniousMeetingsCount = Math.Max(simultaniousMeetingsCount, meetings.Count);
             continue;
             
