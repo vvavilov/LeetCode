@@ -25,15 +25,11 @@ public class Solution {
                 var preLastEncounter = preLastPos[pos];
             
                 if(preLastEncounter != null) {
-                    // var substringWithSeveralLettersCount = encounteredBefore.Value - preLastEncounter.Value - 1;
                     var substringWithSeveralLettersCount = preLastEncounter.Value + 1;
-
                     curSum += substringWithSeveralLettersCount;
                 }
 
             }
-            
-            Console.WriteLine("curSum " + curSum);
             
             totalSum += curSum;
             prevSum = curSum;
