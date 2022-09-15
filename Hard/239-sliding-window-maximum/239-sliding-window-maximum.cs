@@ -1,3 +1,10 @@
+// public class Solution {
+//     public int[] MaxSlidingWindow(int[] nums, int k) {
+        
+        
+//     }
+// }
+
 public class Solution {
     public int[] MaxSlidingWindow(int[] nums, int k) {
         var dictionary = new SortedDictionary<int, int>(new MaxHeapComparer());
