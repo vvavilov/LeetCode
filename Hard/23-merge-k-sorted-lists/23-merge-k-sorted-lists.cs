@@ -50,7 +50,7 @@ public class Solution {
     }
 }
 
-public class SolutionBruteForse {
+public class SolutionBruteForce {
     public ListNode MergeKLists(ListNode[] lists) {
         if(lists.Length == 0) {
             return null;            
