@@ -46,13 +46,13 @@ public class Solution {
             }
             
             if(Char.IsDigit(symbol)) {
-                var start = i;
+                var number = (int)Char.GetNumericValue(s[i]);
                 
                 while(i + 1 < s.Length && Char.IsDigit(s[i+1])) {
                     i++;
+                    number = number * 10 + (int)Char.GetNumericValue(s[i]);
                 }
                 
-                var number = Int32.Parse(s.Substring(start, i - start + 1));
                 output.Add(new Number(number));
                 continue;
             }
