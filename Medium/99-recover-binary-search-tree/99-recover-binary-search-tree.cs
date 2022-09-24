@@ -30,7 +30,6 @@ public class Solution {
         Swap(left, right);
     }
    
-    // l=3 r=2
     private TreeNode InorderTraversal(TreeNode node, TreeNode prev) {
         if(node == null) {
             return prev;
