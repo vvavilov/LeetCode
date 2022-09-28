@@ -22,11 +22,6 @@ public class Solution {
             increasing.Push(i);
         }
 
-        
-        Console.WriteLine("Min");
-
-        Console.WriteLine(total);
-
         return total;
 
     }
