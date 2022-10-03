@@ -9,12 +9,7 @@ public class Solution {
             
             var curInterval = 0;
             
-            // Console.WriteLine("interval " + toPaint.start + " " + toPaint.end);
-
-            
             while(curInterval < paintedIntervals.Count && toPaint.start > paintedIntervals[curInterval].end) {
-                Console.WriteLine("not overlaps " + paintedIntervals[curInterval].start + " " + paintedIntervals[curInterval].end);
-
                 newPaintedIntervals.Add(paintedIntervals[curInterval]);
                 curInterval++;
             }
@@ -32,11 +27,7 @@ public class Solution {
                     Math.Max(mergedInterval.end, paintedInterval.end)); 
                 
                 curInterval++;
-                // 0 17,  18, 19 - 16 18
-                
             }
-            
-            Console.WriteLine("merged " + mergedInterval.start + " " + mergedInterval.end);
             
             newPaintedIntervals.Add(mergedInterval);
             result.Add(toPaintCount);
