@@ -42,8 +42,4 @@ public class Solution {
         
         return result.ToArray();
     }
-    
-    private bool IsOverlaps((int start, int end) newOne, (int start, int end) existingOne) {
-        return newOne.start <= existingOne.end && newOne.end >= existingOne.start;
-    }
 }
