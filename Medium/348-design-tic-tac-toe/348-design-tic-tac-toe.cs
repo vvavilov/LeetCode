@@ -2,72 +2,42 @@ public class TicTacToe {
     // 0  1  2
     // 3  4  5
     // 6  7  8
-    private int[][] board;
     private int n;
+    private int[] rows;
+    private int[] cols;
+    private int diagonal;
+    private int antiDiagonal;
     
     public TicTacToe(int n) {
         this.n = n;
-        board = new int[n][];
-        
-        for(int i = 0; i < n; i++) {
-            board[i] = new int[n];
-        }
+        rows = new int[n];
+        cols = new int[n];
     }
     
     public int Move(int row, int col, int player) {
-        board[row][col] = player;
+        int increment = player == 1 ? 1 : -1;
         
-        if(WonByRow(row, player)
-           || WonByColumn(col, player)
-           || WonByLeftDiagonal(row, col, player)
-           || WonByRightDiagonal(row, col, player)
-          ) {
-            return player;
+        rows[row] += increment;
+        cols[col] += increment;
+        
+        if(row == col) {
+            diagonal+= increment;
         }
+        
+        if(row == n - col - 1) {
+            antiDiagonal += increment;
+        }
+        
+        var winConditionCount = player == 1 ? n : -n;
+        
+        if(rows[row] == winConditionCount
+            || cols[col] == winConditionCount
+            || diagonal == winConditionCount
+            || antiDiagonal == winConditionCount) {
+            return player;
+        };
         
         return 0;
-    }
-    
-    private bool WonByRow(int row, int player) {
-        return board[row].All(x => x == player);
-    }
-    
-    private bool WonByColumn(int column, int player) {
-        for(int i = 0; i < n; i++) {
-            if(board[i][column] != player) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-    
-    private bool WonByLeftDiagonal(int row, int col, int player) {
-        if(row != col) {
-            return false;
-        }
-        
-        for(int i = 0; i < n; i++) {
-            if(board[i][i] != player) {
-                return false;
-            }
-        }
-        
-        return true;
-    }
-    
-    private bool WonByRightDiagonal(int row, int col, int player) {
-        if(row != n - col - 1) {
-            return false;
-        }
-        
-        for(int i = 0; i < n; i++) {
-            if(board[n - i - 1][i] != player) {
-                return false;
-            }
-        }
-        
-        return true;
     }
 }
 
