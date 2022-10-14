@@ -1,39 +1,49 @@
 public class Solution {
-    public int MaximumDetonation(int[][] bombs) {
-        if(bombs.Length == 0) {
-            return 0;
-        }
-
-        var max = 0;
+    private List<int>[] BuildGraph(int[][] bombs) {
+        var graph = new List<int>[bombs.Length];
         
         for(int i = 0; i < bombs.Length; i++) {
-            HashSet<int> visited = new();
-            var affectedBombs = new Queue<int>();
-            affectedBombs.Enqueue(i);
+            graph[i] = new List<int>();
+            
+            for(int j = 0; j < bombs.Length; j++) {
+                if(Overlaps(bombs[i], bombs[j])) {
+                    graph[i].Add(j);
+                }
+            }
+        }
+        
+        return graph;
+    }
+    
+    public int MaximumDetonation(int[][] bombs) {
+        var graph = BuildGraph(bombs);
+        var max = 0;
+        
+        for(int i = 0; i < graph.Length; i++) {
+            var queue = new Queue<int>();
+            var visited = new HashSet<int>();
+            
+            queue.Enqueue(i);
             visited.Add(i);
             var count = 0;
             
-            while(affectedBombs.Count > 0) {
-                var bomb = affectedBombs.Dequeue();
+            while(queue.Count > 0) {
+                var bomb = queue.Dequeue();
                 count++;
                 
-                for(int j = 0; j < bombs.Length; j++) {
-                    if(visited.Contains(j)) {
+                foreach(var affected in graph[bomb]) {
+                    if(visited.Contains(affected)) {
                         continue;
                     }
                     
-                    if(!Overlaps(bombs[bomb], bombs[j])) {
-                        continue;
-                    }
-                    
-                    visited.Add(j);
-                    affectedBombs.Enqueue(j);
+                    visited.Add(affected);
+                    queue.Enqueue(affected);
                 }
             }
             
             max = Math.Max(max, count);
         }
-
+        
         return max;
 
     }
