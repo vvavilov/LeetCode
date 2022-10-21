@@ -1,32 +1,26 @@
 public class Solution {
     public int NumDecodings(string s) {
+        if(s.Length == 1) {
+            return IsDecodable(s[0]) ? 1 : 0;
+        }
+        
         var dp = new int[s.Length];
-        Array.Fill(dp, -1);
+        
+        dp[0] = IsDecodable(s[0]) ? 1 : 0;
+        dp[1] = IsDecodable(s[1]) ? dp[0] : 0;
+        dp[1] = IsDecodable(s.Substring(0, 2)) ? dp[1] + 1 : dp[1];
+        
+        for(int i = 2; i < s.Length; i++) {
+            if(IsDecodable(s[i])) {
+                dp[i] += dp[i - 1];
+            }
+            
+            if(IsDecodable(s.Substring(i - 1, 2))) {
+                dp[i] += dp[i - 2];
+            }
+        }    
 
-        return DP(s.Length - 1, s, dp);
-    }
-    
-    private int DP(int pos, string s, int[] dp) {
-        if(pos == -1) {
-            return 1;
-        }
-        
-        if(dp[pos] != -1) {
-            return dp[pos];
-        }
-        
-        var count = 0;
-        
-        if(IsDecodable(s[pos])) {
-            count += DP(pos - 1, s, dp);
-        }
-        
-        if(pos >= 1 && IsDecodable(s.Substring(pos - 1, 2))) {
-            count += DP(pos - 2, s, dp);
-        }
-        
-        dp[pos] = count;
-        return count;
+        return dp[dp.Length - 1];
     }
     
     private bool IsDecodable(char c) {
