@@ -1,87 +1,39 @@
 public class Solution {
-    
-//     142354356
     public int NumDecodings(string s) {
-        if(s.Length == 1) {
-            return s[0] == '0' ? 0 : 1;
-        }
+        var dp = new int[s.Length];
+        Array.Fill(dp, -1);
 
-        var decodings = new int[s.Length];
-        decodings[0] = IsDecodable(s, 0, 0) ? 1 : 0;
-        decodings[1] = (IsDecodable(s, 0, 1) ? 1 : 0)
-            + (IsDecodable(s,0,0) && IsDecodable(s,1,1) ? 1 : 0);
-        
-        for(int i = 2; i < s.Length; i++) {
-            decodings[i] = 0;
-            if(IsDecodable(s, i, i)) {
-                decodings[i] += decodings[i - 1];
-            }
-            if(IsDecodable(s,i - 1, i)) {
-                decodings[i] += decodings[i-2];
-            }
-        }
-        
-        return decodings[s.Length - 1];
+        return DP(s.Length - 1, s, dp);
     }
     
-    
-    
-    
-    
-    IDictionary<int, int> mem = new Dictionary<int, int>();
-
-    public int NumDecodingsTopDown(string s) {
-        return Count(s, 0);
-    }
-    
-    private int Count(string s, int start) {
-        if(mem.ContainsKey(start)) {
-            return mem[start];
+    private int DP(int pos, string s, int[] dp) {
+        if(pos == -1) {
+            return 1;
         }
         
-        var length = s.Length - start;
+        if(dp[pos] != -1) {
+            return dp[pos];
+        }
+        
         var count = 0;
-
-        if(length == 2) {
-            count += IsDecodable(s, start, start + 1) ? 1 : 0;
-            count += IsDecodable(s, start, start) && IsDecodable(s, start + 1, start + 1) ? 1 : 0;
-            
-            return count;
+        
+        if(IsDecodable(s[pos])) {
+            count += DP(pos - 1, s, dp);
         }
         
-        if(length == 1) {
-            return IsDecodable(s,start,start) ? 1 : 0;
+        if(pos >= 1 && IsDecodable(s.Substring(pos - 1, 2))) {
+            count += DP(pos - 2, s, dp);
         }
         
-        
-        if(IsDecodable(s, start, start)) {
-            count += Count(s, start + 1);
-        }
-        
-        if(IsDecodable(s, start, start + 1)) {
-            count += Count(s, start + 2);
-        }
-        
-        mem[start] = count;
+        dp[pos] = count;
         return count;
     }
     
-    private bool IsDecodable(string s, int start, int end) {
-        if(end < start) {
-            return false;
-        }
-
-        var first = s[start];
-        var second = s[end];
-        
-        if(first == '0') {
-            return false;
-        }
-        
-        if(start == end) {
-            return true;
-        }
-        
-        return first == '1' || first == '2' && second < '7';
-    } 
+    private bool IsDecodable(char c) {
+        return c != '0';
+    }
+    
+    private bool IsDecodable(string s) {
+        return s[0] == '1' || s[0] == '2' && s[1] < '7';
+    }
 }
