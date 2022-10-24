@@ -20,9 +20,9 @@ public class Solution {
         for(int i = index; i < candidates.Length; i++) {
             var curItem = candidates[i];
             
-            if(i > index && curItem == candidates[i-1]) {
-                continue;
-            }
+            // if(i > index && curItem == candidates[i-1]) {
+            //     continue;
+            // }
             
             cur.AddLast(curItem);
             CombinationSum(candidates, target - curItem, i, result, cur);
