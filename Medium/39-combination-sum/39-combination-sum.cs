@@ -1,7 +1,7 @@
 public class Solution {
     public IList<IList<int>> CombinationSum(int[] candidates, int target) {
         List<IList<int>> result = new();
-        Array.Sort(candidates);
+        // Array.Sort(candidates);
         CombinationSum(candidates, target, 0, result, new LinkedList<int>());
         
         return result;
