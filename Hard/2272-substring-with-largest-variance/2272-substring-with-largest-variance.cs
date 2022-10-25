@@ -16,13 +16,8 @@ public class Solution {
                 var seenY = false;
                 var startsWithY = false;
                 
-                // aaba
-                
                 foreach(var c in s) {
-                    if(diff <= -1) {
-                        diff = -1;
-                        startsWithY = true;
-                    }
+                    
 
                     if(c == x) {
                         diff++;
@@ -36,6 +31,11 @@ public class Solution {
 
                         seenY = true;
                         diff--;
+                    }
+                    
+                    if(diff <= -1) {
+                        diff = -1;
+                        startsWithY = true;
                     }
                     
                     if(seenY) {
