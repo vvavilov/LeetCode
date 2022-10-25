@@ -17,7 +17,10 @@ public class Solution {
                 var startsWithY = false;
                 
                 foreach(var c in s) {
-                    
+                    if(diff <= -1) {
+                        diff = -1;
+                        startsWithY = true;
+                    }
 
                     if(c == x) {
                         diff++;
@@ -31,11 +34,6 @@ public class Solution {
 
                         seenY = true;
                         diff--;
-                    }
-                    
-                    if(diff <= -1) {
-                        diff = -1;
-                        startsWithY = true;
                     }
                     
                     if(seenY) {
