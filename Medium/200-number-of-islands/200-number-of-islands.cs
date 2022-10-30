@@ -1,46 +1,42 @@
 public class Solution {
-    int count = 0;
-    
     public int NumIslands(char[][] grid) {
+        if(grid.Length == 0) {
+            return 0;
+        }
+        
+        var total = 0;
+        
         for(int i = 0; i < grid.Length; i++) {
-            for (int j = 0; j < grid[0].Length; j++) {
-                if(DetectIsland(grid, i, j)) {
-                    count++;
-                }
+            for(int j = 0; j < grid[0].Length; j++) {
+                total += SinkIsland(grid, i, j);
             }
         }
-        return count;
+        
+        return total;
     }
     
-    private bool DetectIsland(char[][] grid, int y, int x) {
-        if(!IsInBoundaries(grid, y, x)) {
-            return false;
+    private int SinkIsland(char[][] grid, int y, int x) {
+        if(y < 0 || x < 0 || y == grid.Length || x == grid[0].Length) {
+            return 0;
         }
-
+        
         if(grid[y][x] == '0') {
-            return false;
+            return 0;
         }
         
         grid[y][x] = '0';
         
-        List<(int, int)> directions = new List<(int, int)>() {
-            (-1, 0),
+        var neigh = new (int y, int x)[] {
             (0, 1),
             (1, 0),
-            (0, -1)
+            (0, -1),
+            (-1, 0)
         };
         
-        foreach(var (nY, nX) in directions) {
-            DetectIsland(grid, y + nY, x + nX);
+        foreach(var n in neigh) {
+            SinkIsland(grid, y + n.y, x + n.x);
         }
         
-        return true;
-    }
-    
-    private bool IsInBoundaries(char[][] grid, int y, int x) {
-        return x >= 0
-            && x < grid[0].Length
-            && y >= 0
-            && y < grid.Length;
+        return 1;
     }
 }
