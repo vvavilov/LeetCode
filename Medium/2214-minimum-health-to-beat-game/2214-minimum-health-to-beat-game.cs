@@ -8,6 +8,8 @@ public class Solution {
             maxDamage = Math.Max(maxDamage, x);
         }
         
-        return total - Math.Min(armor, maxDamage) + 1;
+        total -= Math.Min(maxDamage, armor);
+        return total + 1;
+        
     }
 }
