@@ -1,60 +1,64 @@
 public class Solution {
     public int OrangesRotting(int[][] grid) {
-        var height = grid.Length;
-        var width = grid[0].Length;
-                
-        var queue = new Queue<(int y, int x)>();
-        
+        var directions = new (int y, int x)[] {
+            (0,1),
+            (1, 0),
+            (0, -1),
+            (-1, 0)
+        };
+
+        Queue<(int y, int x)> queue = new();
+        var tick = 0;
         var fresh = 0;
-        var time = -1;
-        for(int i = 0; i < height; i++) {
-            for(int j = 0; j < width; j++) {
-                if (grid[i][j] == 1) {
-                    fresh++;
-                }
-                if (grid[i][j] == 2) {
+        
+        for(int i = 0; i < grid.Length; i++) {
+            for(int j = 0; j < grid[0].Length; j++) {
+                if(grid[i][j] == 2) {
                     queue.Enqueue((i, j));
                 }
-            }
-        }
-        
-        if(fresh == 0) { return 0; }
-        
-        while(queue.Count > 0) {
-            time++;
-            var size = queue.Count;
-            for (int k = 0; k < size; k++) {
-                (var i, var j) = queue.Dequeue();
-                var directions = new (int i, int j)[]{
-                    (0, -1),
-                    (-1, 0),
-                    (0, 1),
-                    (1, 0),
-                };
-
-                foreach(var direction in directions) {
-                    var neighborY = i + direction.i;
-                    var neighborX = j + direction.j;
-
-                    if(
-                        neighborY < 0
-                        || neighborY == height
-                        || neighborX < 0
-                        || neighborX >= width
-                        || grid[neighborY][neighborX] == 2
-                        || grid[neighborY][neighborX] == 0
-                    ) { continue; }
-
-                    grid[neighborY][neighborX] = 2;
-                    queue.Enqueue((neighborY, neighborX));
-                    fresh--;
+                
+                if(grid[i][j] == 1) {
+                    fresh++;
                 }
             }
         }
         
-        return fresh > 0 
-            ? -1
-            : time;
+        if(fresh == 0) {
+            return 0;
+        }
+        
+        while(queue.Count > 0) {
+            var count = queue.Count;
+            tick++;
+            
+            while(count-- > 0) {
+                var cell = queue.Dequeue();
+
+                foreach(var dir in directions) {
+                    var neighY = cell.y + dir.y;
+                    var neighX = cell.x + dir.x;
+                    
+                    if(neighY < 0 || neighX < 0 || neighY == grid.Length || neighX == grid[0].Length) {
+                        continue;
+                    }
+
+                    if(grid[neighY][neighX] == 1) {
+                        fresh--;
+                        grid[neighY][neighX] = 0;
+                        queue.Enqueue((neighY, neighX));
+                    }
+                }
+            }
+            
+            if(fresh == 0) {
+                return tick;
+            }
+            
+        }
+        
+        
+        return -1;
+        
         
     }
 }
