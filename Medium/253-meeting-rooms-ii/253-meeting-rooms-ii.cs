@@ -1,57 +1,33 @@
 public class Solution {
     public int MinMeetingRooms(int[][] intervals) {
-        var events = new PriorityQueue<int, (EventType type, int time)>(new ByTimeAndTypeComparer());
+        List<(int time, int id, int type)> events = new();
+        var startType = 1;
+        var endType = 0;
         
         for(int i = 0; i < intervals.Length; i++) {
-            events.Enqueue(i, (EventType.Start, intervals[i][0]));
-            events.Enqueue(i, (EventType.End, intervals[i][1]));
+            var interval = intervals[i];
+            
+            events.Add((interval[0], i, startType));
+            events.Add((interval[1], i, endType));    
         }
         
-        HashSet<int> meetings = new();
-        var simultaniousMeetingsCount = 0;
+        var sortedByTime = events.OrderBy(x => x.time).ThenBy(x => x.type);
+        var meetingsCount = 0;
+
+        HashSet<int> ongoingEvents = new(); 
         
-        while(events.Count > 0) {
-            events.TryDequeue(out var id, out var meetingEvent);
-            
-            if(meetingEvent.type == EventType.End) {
-                meetings.Remove(id);
-                continue;
-            } 
-
-            meetings.Add(id);
-            simultaniousMeetingsCount = Math.Max(simultaniousMeetingsCount, meetings.Count);
-            continue;
-            
-            
-        }
-        
-        return simultaniousMeetingsCount;
-    }
-}
-
-public enum EventType {
-    Start,
-    End
-}
-
-public class ByTimeAndTypeComparer : IComparer<(EventType type, int time)> {
-    public int Compare((EventType type, int time) left, (EventType type, int time) right) {
-        if(left.time == right.time) {
-            if(left.type == right.type) {
-                return 0;
+        foreach(var x in sortedByTime) {
+            if(x.type == startType) {
+                ongoingEvents.Add(x.id);
+            } else {
+                ongoingEvents.Remove(x.id);
             }
             
-            if(left.type == EventType.Start) {
-                return 1;
-            }
-            
-            return -1;
+            meetingsCount = Math.Max(meetingsCount, ongoingEvents.Count);
         }
         
-        if(left.time < right.time) {
-            return -1;
-        }
+        return meetingsCount;
         
-        return 1;
+
     }
 }
