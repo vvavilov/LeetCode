@@ -1,51 +1,46 @@
 public class Solution {
     public long SubArrayRanges(int[] nums) {
-        return MaximumSum(nums) - MinimumSum(nums);
+        return MaxSum(nums) - MinSum(nums);
     }
-
-    private long MinimumSum(int[] nums) {
-        Stack<int> increasing = new();
-        long total = 0;
-        var listOfNums = new List<int>(nums);
-        listOfNums.Add(Int32.MinValue);
-
-        for(int i = 0; i < listOfNums.Count; i++) {
-            var cur = listOfNums[i];
-
-            while(increasing.Count > 0 && listOfNums[increasing.Peek()] > cur) {
-                var itemPos = increasing.Pop();
-                var leftBorder = increasing.Count > 0 ? increasing.Peek() + 1 : 0;
-                var subarraysCount = 0L + (itemPos - leftBorder) * (i - itemPos) + i - itemPos;
-                total += subarraysCount * listOfNums[itemPos];
-            }
-
-            increasing.Push(i);
-        }
-
-        return total;
-
-    }
-
-    private long MaximumSum(int[] nums) {
-        Stack<int> decreasing = new();
-        long total = 0;
-        var listOfNums = new List<int>(nums);
-        listOfNums.Add(Int32.MaxValue);
-
-        for(int i = 0; i < listOfNums.Count; i++) {
-            var cur = listOfNums[i];
-
-            while(decreasing.Count > 0 && listOfNums[decreasing.Peek()] < cur) {
-                var itemPos = decreasing.Pop();
-                var leftBorder = decreasing.Count > 0 ? decreasing.Peek() + 1 : 0;
-                var subarraysCount = 0L + (itemPos - leftBorder) * (i - itemPos) + i - itemPos;
-                total += subarraysCount * listOfNums[itemPos];
+    
+    private long MinSum(int[] nums) {
+        Stack<int> stack = new();
+        var items = new List<int>(nums);
+        items.Add(Int32.MinValue);
+        var sum = 0L;
+        
+        for(int i = 0; i < items.Count; i++) {
+            while(stack.Count > 0 && items[stack.Peek()] > items[i]) {
+                var pos = stack.Pop();
+                var rightBorder = i;
+                var leftBorder = stack.Count > 0 ? stack.Peek() : -1;
+                sum += (long)items[pos] * (pos - leftBorder) * (rightBorder - pos); 
             }
             
-            decreasing.Push(i);
+            stack.Push(i);
         }
-
-        return total;
-
+        
+        return sum;
     }
+    
+    private long MaxSum(int[] nums) {
+        Stack<int> stack = new();
+        var items = new List<int>(nums);
+        items.Add(Int32.MaxValue);
+        var sum = 0L;
+        
+        for(int i = 0; i < items.Count; i++) {
+            while(stack.Count > 0 && items[stack.Peek()] < items[i]) {
+                var pos = stack.Pop();
+                var rightBorder = i;
+                var leftBorder = stack.Count > 0 ? stack.Peek() : -1;
+                sum += (long)items[pos] * (pos - leftBorder) * (rightBorder - pos); 
+            }
+            
+            stack.Push(i);
+        }
+        
+        return sum;
+    }
+        
 }
