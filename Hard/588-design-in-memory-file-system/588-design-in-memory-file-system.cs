@@ -1,99 +1,103 @@
-
-
 public class FileSystem {
-    public Folder Root = new Folder();
-    
+    private Folder Root = new();
+
     public FileSystem() {
         
     }
     
-    private IList<string> SplitPath(string path) {
-        if(path == "/") {
-            return new List<string>();
-        }
-        return path.Trim('/').Split('/');
-        
-    } 
-    
     public IList<string> Ls(string path) {
-        var entities = SplitPath(path);
-        Folder folder = Root;
+        var pathSegments = SplitPath(path);
         
-        if(path == "/") {
-            return Root.Children.Keys.ToList<string>();
+        if(pathSegments.Count == 0) {
+            return Root.List();
         }
         
-        foreach(var x in entities.SkipLast(1)) {
-            folder = folder.GetOrCreateFolder(x);
+        var folder = Root;
+        
+        foreach(var x in pathSegments.SkipLast(1)) {
+            folder = (Folder)folder.Children[x];
         }
         
-        if(folder.Children[entities.Last()] is File) {
-            return new List<string> { entities.Last() };
-        }
-        
-        return folder.GetOrCreateFolder(entities.Last()).Children.Keys.ToList<string>();
+        return folder.Children[pathSegments.Last()].List();
     }
     
     public void Mkdir(string path) {
-        var entities = SplitPath(path);
+        var pathSegments = SplitPath(path);
         var folder = Root;
         
-        foreach(var x in entities) {
-            folder = folder.GetOrCreateFolder(x);
+        foreach(var x in pathSegments) {
+            if(!folder.Children.ContainsKey(x)) {
+                folder.Children[x] = new Folder();
+            } 
+            
+            folder = (Folder)folder.Children[x];
         }
     }
     
     public void AddContentToFile(string filePath, string content) {
-        var entities = SplitPath(filePath);
-        var folder = Root;
+        var pathSegments = SplitPath(filePath);
+        var folder = NavigateToFolder(pathSegments.SkipLast(1));
+        var fileName = pathSegments.Last();
         
-        foreach(var x in entities.SkipLast(1)) {
-            folder = folder.GetOrCreateFolder(x);
+        if(!folder.Children.ContainsKey(fileName)) {
+            folder.Children[fileName] = new File { Name = fileName };
         }
         
-        var existingFile = folder.GetOrCreateFile(entities.Last());
-        existingFile.Content += content;
+        var file = (File)folder.Children[fileName];
+        
+        file.Content = file.Content + content;
     }
     
     public string ReadContentFromFile(string filePath) {
-        var entities = SplitPath(filePath);
+        var pathSegments = SplitPath(filePath);
+        var folder = NavigateToFolder(pathSegments.SkipLast(1));
+        
+        var fileName = pathSegments.Last();
+        return ((File)folder.Children[fileName]).Content;
+        
+    }
+    
+    private List<string> SplitPath(string path) {
+        if(path == "/") {
+            return new List<string>();
+        }
+        return path.Split('/').Skip(1).ToList();
+    }
+    
+    private Folder NavigateToFolder(IEnumerable<string> path) {
         var folder = Root;
-        
-        foreach(var x in entities.SkipLast(1)) {
-            folder = folder.GetOrCreateFolder(x);
+
+        foreach(var x in path) {            
+            folder = (Folder)folder.Children[x];
         }
         
-        return folder.GetOrCreateFile(entities.Last()).Content;
+        return folder;
     }
 }
 
-public interface IEntity {
+public interface Entity {
+    List<string> List();
 }
 
-public class Folder : IEntity {
-    public SortedDictionary<string, IEntity> Children {get;set;} = new();
+public class Folder : Entity {
+    public SortedDictionary<string, Entity> Children { get; set; } = new();
     
-    public Folder GetOrCreateFolder(string name) {
-        if(!Children.ContainsKey(name)) {
-            Children[name] = new Folder();
-        }
+    public List<string> List() {
+        return Children.Keys.ToList();
+    }
+}
 
-        return (Folder)Children[name];
+public class File : Entity {
+    public string Name { get; set; }
+    
+    public List<string> List() {
+        return new List<string> { Name };
     }
     
-    public File GetOrCreateFile(string name) {
-        if(!Children.ContainsKey(name)) {
-            Children[name] = new File();
-        }
-        
-        return (File)Children[name];
-    }
-
+    public string Content { get; set; }
 }
 
-public class File : IEntity {
-    public string Content {get;set;}
-}
+
 
 /**
  * Your FileSystem object will be instantiated and called as such:
