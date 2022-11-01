@@ -11,13 +11,7 @@ public class Solution {
         var total = 0;
         
         for(int i = 0; i < orderedByFrequency.Count; i++) {
-            Console.WriteLine("i  " + i);
-
             var toPress = i / 9 + 1;
-            Console.WriteLine("toPress  " + toPress);
-            Console.WriteLine("orderedByFrequency [i] " + orderedByFrequency[i]);
-
-
             total += toPress * orderedByFrequency[i];
         }
         
