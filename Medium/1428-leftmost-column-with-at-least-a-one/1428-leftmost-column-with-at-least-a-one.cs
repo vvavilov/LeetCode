@@ -7,33 +7,31 @@
  * }
  */
 
+
+
 class Solution {
     public int LeftMostColumnWithOne(BinaryMatrix binaryMatrix) {
-        var row = 0;
         var rows = binaryMatrix.Dimensions()[0];
         var cols = binaryMatrix.Dimensions()[1];
+        var leftMostOnePos = cols;
         
-        var colSoFar = cols - 1;
-        
-        while(row < rows) {
-            var val = binaryMatrix.Get(row, colSoFar);
+        for(int row = 0; row < rows; row++) {
+            if(leftMostOnePos == 0) {
+                return leftMostOnePos;
+            }
+            
+            for(int col = leftMostOnePos - 1; col >= 0; col--) {
+                if(binaryMatrix.Get(row, col) == 1) {
+                    leftMostOnePos = col;
+                } else {
+                    break;
 
-            if(val == 0) {
-                row++;
-                continue;
+                }
             }
-            
-            if(colSoFar == 0) {
-                return colSoFar;
-            }
-            
-            colSoFar--;
         }
         
-        if(colSoFar == cols - 1) {
-            return -1;
-        }
+        return leftMostOnePos == cols ? -1 : leftMostOnePos;
         
-        return colSoFar + 1;
+        
     }
 }
