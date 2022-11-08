@@ -24,7 +24,9 @@ public class Solution {
             while(nums[max.First.Value] - nums[min.First.Value] > limit) {
                 if(max.First.Value == left) {
                     max.RemoveFirst();
-                } else if(min.First.Value == left) {
+                }
+                
+                if(min.First.Value == left) {
                     min.RemoveFirst();
                 }
                 
