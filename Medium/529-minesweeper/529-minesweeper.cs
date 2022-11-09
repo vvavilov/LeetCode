@@ -30,7 +30,7 @@ public class Solution {
             var minesAround = CalculateMinesAround(board, cell);
             
             if(minesAround != 0) {
-                board[cell.y][cell.x] = minesAround.ToString()[0];
+                board[cell.y][cell.x] = (char)(minesAround + '0');
             } else {
                 board[cell.y][cell.x] = 'B';
                 
