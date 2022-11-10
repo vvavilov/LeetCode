@@ -12,100 +12,43 @@
  * }
  */
 public class Solution {
+    private int result = -1;
+
     public int FindDistance(TreeNode root, int p, int q) {
-        return Dfs(root, p, q).Between;
+        Dfs(root, p, q);
+        return result;
     }
     
-    private Distance Dfs(TreeNode node, int p,  int q) {
+    private int Dfs(TreeNode node, int p,  int q) {
         if(node == null) {
-            return Distance.NotFound();
+            return -1;
         }
         
-        var leftResult = Dfs(node.left, p, q);
+        var left = Dfs(node.left, p, q);
+        var right = Dfs(node.right, p, q);
         
-        if(leftResult.HasBetween) {
-            return leftResult;
+        if(left >= 0 && right >= 0) {
+            result = left + right;
+            return -1;
         }
         
-        var rightResult = Dfs(node.right, p, q);
-        
-        if(rightResult.HasBetween) {
-            return rightResult;
-        }
-        
-        if(leftResult.HasToNode && rightResult.HasToNode) {
-            return Distance.OfBetween(leftResult.ToNode + rightResult.ToNode);
-        }
-        
-        var childDistance = DistanceToSingleChild(leftResult, rightResult);
+        var childDistance = left >= 0 ? left : right;
         
         if(node.val == p && node.val == q) {
-            return Distance.OfBetween(0);
+            result = 0;
+            return -1;
         }
         
-        if(node.val == p || node.val == q) {
-            if(childDistance.HasToNode) {
-                return Distance.OfBetween(childDistance.ToNode);
+        if(node.val == q || node.val == p) {
+            if(childDistance >= 0) {
+                result = childDistance;
+                return -1;
             }
-        
-            return Distance.OfToNode(1);
+            
+            return 1;
         }
         
-        if(childDistance.HasToNode) {
-            return Distance.OfToNode(childDistance.ToNode + 1);
-        }
-    
-        return childDistance;
-    }
-    
-    private Distance DistanceToSingleChild(Distance left, Distance right) {
-        if(left.HasToNode) {
-            return left;
-        }
+        return childDistance >= 0 ? childDistance + 1 : -1;
         
-        
-        if(right.HasToNode) {
-            return right;
-        }
-        
-        return Distance.NotFound();
-    }
-}
-
-public class Distance {
-    public int Between {get;set;}
-    public int ToNode {get;set;}
-    
-    public bool HasBetween {
-        get {
-            return Between != -1;
-        }
-    }
-    
-    public bool HasToNode {
-        get {
-            return ToNode != -1;
-        }
-    }
-    
-    public static Distance OfBetween(int betweenDistance) {
-        return new Distance {
-            Between = betweenDistance,
-            ToNode = -1
-        };
-    }
-    
-    public static Distance OfToNode(int toNodeDistance) {
-        return new Distance {
-            ToNode = toNodeDistance,
-            Between = -1
-        };
-    }
-    
-    public static Distance NotFound() {
-        return new Distance {
-            Between = -1,
-            ToNode = -1
-        };
     }
 }
