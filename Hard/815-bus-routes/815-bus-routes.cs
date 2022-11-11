@@ -1,67 +1,52 @@
 public class Solution {
     public int NumBusesToDestination(int[][] routes, int source, int target) {
-        var graph = BuildGraph(routes);
-        var bestRides = new PriorityQueue<(int stop, int bus, int busesTaken), int>();
-        // var busesUsed = new HashSet<int>();
-        var visited = new HashSet<(int bus, int stop)>();
+        var busesPerStops = new Dictionary<int, List<int>>();
         
-        if(!graph.ContainsKey(source)) {
-            return -1;
+        for(int i = 0; i < routes.Length; i++) {
+            foreach(var stop in routes[i]) {
+                if(!busesPerStops.ContainsKey(stop)) {
+                    busesPerStops[stop] = new List<int>();
+                }
+                
+                busesPerStops[stop].Add(i);
+            }
         }
         
-        if(source == target) {
-            return 0;
-        }
+        var visited = new HashSet<int>();
+        var visitedBuses = new HashSet<int>();
+
+        var queue = new Queue<(int stop, int buses)>();
+        queue.Enqueue((source, 0));
+        visited.Add(source);
         
-        foreach(var ride in graph[source]) {
-            bestRides.Enqueue((ride.destination, ride.bus, 1), 1);
-        }
-        
-        while(bestRides.Count > 0) {
-            var ride = bestRides.Dequeue();
+        while(queue.Count > 0) {
+            var item = queue.Dequeue();
             
-            if(ride.stop == target) {
-                return ride.busesTaken;
+            if(item.stop == target) {
+                return item.buses;
             }
             
-            visited.Add((ride.bus, ride.stop));
+            var availableBuses = busesPerStops[item.stop];
             
-            if(!graph.ContainsKey(ride.stop)) {
-                continue;
-            }
-            
-            foreach(var nextRide in graph[ride.stop]) {
-                if(visited.Contains((nextRide.bus, nextRide.destination))) {
+            foreach(var bus in availableBuses) {
+                if(visitedBuses.Contains(bus)) {
                     continue;
                 }
                 
-                var busesCount = nextRide.bus == ride.bus ? ride.busesTaken : (ride.busesTaken + 1);
-                bestRides.Enqueue((nextRide.destination, nextRide.bus, busesCount), busesCount);
+                visitedBuses.Add(bus);
+                
+                foreach(var busStop in routes[bus]) {
+                    if(visited.Contains(busStop)) {
+                        continue;
+                    }
+                    
+                    visited.Add(busStop);
+                    queue.Enqueue((busStop, item.buses + 1));
+                }
             }
         }
         
         return -1;
-    }
-    
-    private Dictionary<int, List<(int destination, int bus)>> BuildGraph(int[][] routes) {
-        Dictionary<int, List<(int destination, int bus)>> graph = new();
         
-        for(int busPos = 0; busPos < routes.Length; busPos++) {
-            var bus = routes[busPos]; 
-            var prev = bus[0];
-            
-            for(int stopPos = 1; stopPos <= bus.Length; stopPos++) {
-                var stop = stopPos == bus.Length ? bus[0] : bus[stopPos];
-                
-                graph.TryGetValue(prev, out var existing);
-                graph[prev] = existing ?? new List<(int destination, int bus)>();
-                graph[prev].Add((stop, busPos));
-                prev = stop;
-            }
-            
-            
-        }
-        
-        return graph;
     }
 }
