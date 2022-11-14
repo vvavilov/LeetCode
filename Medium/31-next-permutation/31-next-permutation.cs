@@ -1,22 +1,35 @@
 public class Solution {
     public void NextPermutation(int[] nums) {
-        for(int i = nums.Length - 1; i >= 0; i--) {
-            var minBigger = Int32.MaxValue;
-            var biggerPos = -1;
-            
-            for(int j = nums.Length - 1; j > i; j--) {
-                if(nums[j] > nums[i]) {
-                    var temp = nums[i];
-                    nums[i] = nums[j];
-                    nums[j] = temp;
-                    
-                    Array.Reverse(nums, i + 1, nums.Length - i - 1);
-                    return;
-                }
+        var max = nums[nums.Length - 1];
+        var curPos = nums.Length - 1;
+        
+        while(curPos >= 0 && nums[curPos] >= max) {
+            max = nums[curPos];
+            curPos--;
+        }
+        
+        if(curPos < 0) {
+            Array.Reverse(nums);
+            return;
+        }
+        
+        var digitToReplace = nums[curPos];
+        var biggerThanReplacable = Int32.MaxValue;
+        var minPos = 0;
+        
+        
+        for(var i = curPos + 1; i < nums.Length; i++) {
+            if(nums[i] > digitToReplace && nums[i] <= biggerThanReplacable) {
+                minPos = i;
+                biggerThanReplacable = nums[i];
             }
         }
         
-        Array.Reverse(nums);
         
+        
+        var temp = nums[minPos];
+        nums[minPos] = nums[curPos];
+        nums[curPos] = temp;
+        Array.Reverse(nums, curPos + 1, nums.Length - curPos - 1);
     }
 }
