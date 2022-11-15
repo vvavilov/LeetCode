@@ -1,46 +1,28 @@
 public class Solution {
-    public int AtMostNGivenDigitSet(string[] digits, int n) {
-        // 5876
-        // n for 1d
-        // n * n for 2d
-        // n * n * n for 3d
-        // 3d * by less equal than 5 for 4d
-        
-        // 81
-        // 348
-        
-        // 7 - 3
-        // 8 - 3+(n less than 8 * n)
-        
-        // 100
-        // 1 3 5 7
-            
-        var digitNumber = 0;
-        var digitsCount = digits.Length;
-        var total = 0;
-        var previousLessOrEqualCount = 0;
-        
+    public int AtMostNGivenDigitSet(string[] digits, int n) {            
+        var digitPos = 0;
+        var lessOrEqualCount = 0;
+
         while(n > 0) {
             var digit = n % 10;
             n = n / 10;
             
-            var currentLessOrEqualCount = LessCount(digits, digit) * (int)Math.Pow(digits.Length, digitNumber);
-            
             if(HasDigit(digits, digit)) {
-                currentLessOrEqualCount += digitNumber == 0 ? 1 : previousLessOrEqualCount;
+                lessOrEqualCount = digitPos == 0 ? 1 : lessOrEqualCount;
+            } else {
+                lessOrEqualCount = 0;
             }
             
-            
-            previousLessOrEqualCount = currentLessOrEqualCount;
-            digitNumber++;
+            lessOrEqualCount += LessCount(digits, digit) * (int)Math.Pow(digits.Length, digitPos);
+            digitPos++;
         }
         
-        while(digitNumber - 1 > 0) {
-            previousLessOrEqualCount += (int)Math.Pow(digits.Length, digitNumber - 1);
-            digitNumber--;
+        while(digitPos - 1 > 0) {
+            lessOrEqualCount += (int)Math.Pow(digits.Length, digitPos - 1);
+            digitPos--;
         }
         
-        return previousLessOrEqualCount;
+        return lessOrEqualCount;
     }
     
     private bool HasDigit(string[] digits, int digit) {
