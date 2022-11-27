@@ -1,3 +1,6 @@
+// 10 1 2 4 1 7 2      5
+// max:  
+// min: 1
 
 public class Solution {
     public int LongestSubarray(int[] nums, int limit) {
