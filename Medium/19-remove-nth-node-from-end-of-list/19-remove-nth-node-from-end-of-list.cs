@@ -11,22 +11,25 @@
  */
 public class Solution {
     public ListNode RemoveNthFromEnd(ListNode head, int n) {
-        var dummy = new ListNode(0, head);
-        var fast = dummy;
-        var slow = dummy;
+        // 1 -> 2 -> 3 -> 4 -> 5  -> nil
+        // d -> 1 -> 2
         
-        while(n >= 0) {
-            fast = fast.next;
-            n--;
+        var dumb = new ListNode();
+        dumb.next = head;
+
+        var rightNode = dumb;
+        var leftNode = dumb;
+        
+        while(n-- >= 0) {
+            rightNode = rightNode.next;
         }
         
-        while(fast != null) {
-            fast = fast.next;
-            slow = slow.next;
+        while(rightNode != null) {
+            leftNode = leftNode.next;
+            rightNode = rightNode.next;
         }
         
-        slow.next = slow.next.next;
-        
-        return dummy.next;
+        leftNode.next = leftNode.next.next;
+        return dumb.next;
     }
 }
