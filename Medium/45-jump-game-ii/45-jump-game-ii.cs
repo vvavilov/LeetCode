@@ -1,45 +1,33 @@
 public class Solution {
     public int Jump(int[] nums) {
-        var jumps = 0;
-        var minReachable = 0;
-        var maxReachable = 0;
-        
-        while(maxReachable < nums.Length - 1) {
-            var currentReachable = 0;
-            
-            for(int i = minReachable; i <= maxReachable; i++) {
-                currentReachable = Math.Max(currentReachable, nums[i] + i);    
-            }
-            
-            minReachable = maxReachable + 1;
-            maxReachable = currentReachable;
-            jumps++;
-        }
-        
-        return jumps;
+        return DP(nums, 0, new Dictionary<int, int>());
     }
-}
-
-public class SolutionDP {
-    public int Jump(int[] nums) {
-        var solution = new int[nums.Length];
-        Array.Fill(solution, Int32.MaxValue);
+    
+    private int DP(int[] nums, int pos, Dictionary<int, int> dp) {
+        if(pos == nums.Length - 1) {
+            return 0;
+        }
         
-        solution[0] = 0;
-
-        for(int i = 0; i < nums.Length - 1; i++) {
-            for(int j = 1; j <= nums[i]; j++) {
-                var jumpsSoFar = solution[i];
-                var stepToReach = i + j;
-                
-                if(stepToReach >= nums.Length) {
-                    break;
-                }
-                
-                solution[stepToReach] = Math.Min(solution[stepToReach], jumpsSoFar + 1);
+        if(dp.ContainsKey(pos)) {
+            return dp[pos];
+        }
+        
+        dp[pos] = Int32.MaxValue;
+        
+        for(int i = 1; i <= nums[pos]; i++) {
+            var next = pos + i;
+            
+            if(next >= nums.Length) {
+                break;
+            }
+            
+            var nextBest = DP(nums, next, dp);
+            
+            if(nextBest != Int32.MaxValue) {
+                dp[pos] = Math.Min(dp[pos], 1 + nextBest);
             }
         }
         
-        return solution[nums.Length - 1];        
+        return dp[pos];
     }
 }
