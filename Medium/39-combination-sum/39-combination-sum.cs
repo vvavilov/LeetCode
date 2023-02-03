@@ -1,26 +1,31 @@
 public class Solution {
     public IList<IList<int>> CombinationSum(int[] candidates, int target) {
+        Array.Sort(candidates);
         List<IList<int>> result = new();
-        CombinationSum(candidates, target, 0, result, new LinkedList<int>());
-        
+        Backtrack(candidates, 0, new LinkedList<int>(), target, result);
         return result;
+        
     }
     
-    private void CombinationSum(int[] candidates, int target, int index, IList<IList<int>> result, LinkedList<int> cur) {
-        if(target == 0) {
-            result.Add(new List<int>(cur));
+    private void Backtrack(int[] candidates, int pos, LinkedList<int> acc, int rest, List<IList<int>> result) {
+        if(rest == 0) {
+            result.Add(new List<int>(acc));
             return;
         }
         
-        if(target < 0) {
+        if(rest < 0) {
             return;
         }
         
-        for(int i = index; i < candidates.Length; i++) {
-            var curItem = candidates[i];
-            cur.AddLast(curItem);
-            CombinationSum(candidates, target - curItem, i, result, cur);
-            cur.RemoveLast();
+        for(int i = pos; i < candidates.Length; i++) {
+            if(rest - candidates[i] < 0) {
+                break;
+            }
+            
+            acc.AddLast(candidates[i]);
+            Backtrack(candidates, i, acc, rest - candidates[i], result);
+            acc.RemoveLast();
         }
+        
     }
 }
