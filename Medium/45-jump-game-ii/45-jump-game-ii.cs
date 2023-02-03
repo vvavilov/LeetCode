@@ -1,4 +1,4 @@
-public class Solution {
+public class SolutionTopDown {
     public int Jump(int[] nums) {
         return DP(nums, 0, new Dictionary<int, int>());
     }
@@ -29,5 +29,30 @@ public class Solution {
         }
         
         return dp[pos];
+    }
+}
+
+public class Solution {
+    public int Jump(int[] nums) {
+        Dictionary<int, int> dp = new();
+        dp[nums.Length - 1] = 0;
+        
+        for(int i = nums.Length - 2; i >= 0; i--) {
+            dp[i] = Int32.MaxValue;
+            
+            for(int jumpLength = 1; jumpLength <= nums[i]; jumpLength++) {
+                if(i + jumpLength >= nums.Length) {
+                    break;
+                }
+                
+                var nextJumpsCount = dp[i + jumpLength];
+                
+                if(nextJumpsCount != Int32.MaxValue) {
+                    dp[i] = Math.Min(dp[i], 1 + nextJumpsCount);
+                }
+            }
+        }
+        
+        return dp[0];
     }
 }
