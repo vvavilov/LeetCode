@@ -1,54 +1,34 @@
 public class Solution {
     public IList<IList<string>> GroupAnagrams(string[] strs) {
-        var dict = new Dictionary<string, IList<string>>();
+        Dictionary<string, IList<string>> groupedById = new();
         
-        foreach(var word in strs) {
-            var keys = new int[26];
+        foreach(var x in strs) {
+            var id = GetGroupId(x);
+            var group = groupedById.ContainsKey(id)
+                ? groupedById[id]
+                : new List<string>();
             
-            foreach(var letter in word) {
-                var letterPos = letter - 'a';
-                keys[letterPos]++;
-            }
-            
-            var hashKeyBuilder = new StringBuilder();
-            
-            foreach(var letterCount in keys) {
-                hashKeyBuilder.Append(letterCount);
-                hashKeyBuilder.Append("_");
-            }
-            
-            var hashKey = hashKeyBuilder.ToString();
-            
-            if(!dict.ContainsKey(hashKey)) {
-                dict[hashKey] = new List<string>();
-            }
-            
-            dict[hashKey].Add(word);
+            group.Add(x);
+            groupedById[id] = group;
         }
         
-        return dict.Values.ToList();
+        return groupedById.Values.ToList();
+        
     }
-}
-
-public class SolutionDict {
-    public IList<IList<string>> GroupAnagrams(string[] strs) {
-        var dict = new Dictionary<string, IList<string>>();
+    
+    private string GetGroupId(string s) {
+        var counts = new int[26];
         
-        foreach(var s in strs) {
-            var array = s.ToArray();
-            Array.Sort(array);
-            var sorted = new String(array);
-            
-            if(!dict.ContainsKey(sorted)) {
-                dict[sorted] = new List<string>();
-            }
-            
-            dict[sorted].Add(s);
+        foreach(var x in s) {
+            counts[(int)(x - 'a')]++;
         }
         
-        return dict.Aggregate(new List<IList<string>>(), (acc, cur) => {
-            acc.Add(cur.Value);
-            return acc;
-        });
+        var id = new StringBuilder();
+        
+        for(int i = 0; i < counts.Length; i++) {
+            id.Append($"{i}:{counts[i]}_");
+        }
+        
+        return id.ToString();
     }
 }
