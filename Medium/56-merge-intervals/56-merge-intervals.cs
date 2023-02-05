@@ -1,34 +1,43 @@
 public class Solution {
     public int[][] Merge(int[][] intervals) {
-        var sorted = intervals.OrderBy(x => x[0]).ToArray();
-        List<int[]> result = new();
-        
-        
-        for(int i = 1; i < sorted.Length; i++) {
-            var previus = sorted[i - 1];
-            var current = sorted[i];
-            
-            if(IsOverlaps(previus, current)) {
-                var merged = Merge(current, previus);
-                sorted[i] = merged;
-                continue;
-            }
-            
-            result.Add(previus);
+        if(intervals.Length == 0) {
+            return new int[0][];
         }
         
-        result.Add(sorted[sorted.Length - 1]);
+        var sorted = SortByStart(intervals);
+        return MergeSorted(sorted);
+    }
+    
+    private int[][] SortByStart(int[][] input) {
+        return input.OrderBy(x => x[0]).ToArray();
+    }
+    
+    private int[][] MergeSorted(int[][] input) {
+        List<int[]> result = new();
+        
+        var prevInterval = input[0];
+        
+        for(int i = 1; i < input.Length; i++) {
+            if(!IsOverlaps(prevInterval, input[i])) {
+                result.Add(prevInterval);
+                prevInterval = input[i];
+            } else {
+                prevInterval = MergeTwoIntervals(prevInterval, input[i]);
+            }
+        }
+        
+        result.Add(prevInterval);
         return result.ToArray();
     }
     
     private bool IsOverlaps(int[] left, int[] right) {
-        return left[1] >= right[0];
+        return right[0] <= left[1];
     }
     
-    private int[] Merge(int[] left, int[] right) {
-        var start = Math.Min(left[0], right[0]);
-        var end = Math.Max(left[1], right[1]);
-        
-        return new int[] { start, end };
+    private int[] MergeTwoIntervals(int[] left, int[] right) {
+        return new int[] {
+            left[0],
+            Math.Max(left[1], right[1])
+        };
     }
 }
