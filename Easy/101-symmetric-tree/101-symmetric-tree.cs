@@ -10,85 +10,32 @@
  *         this.right = right;
  *     }
  * }
+ 
+ 
+                    1
+                    
+        2                       3
+    4      5             6               7
+  8    9  10  11     12    13         14    15
+
  */
+
 public class Solution {
     public bool IsSymmetric(TreeNode root) {
-        if(root == null) {
-            return true;
-        }
-        
-        var leftStack = new Stack<TreeNode>();
-        var rightStack = new Stack<TreeNode>();
-        
-        if(root.left != null) {
-            leftStack.Push(root.left);
-        }
-        
-        if(root.right != null) {
-            rightStack.Push(root.right);
-        }
-        
-        while(leftStack.Count > 0 && rightStack.Count > 0) {
-            var leftNode = leftStack.Pop();
-            var rightNode = rightStack.Pop();
-            
-            if(leftNode == null && rightNode == null) {
-                continue;
-            }
-            
-            if(leftNode?.val != rightNode?.val) {
-                return false;
-            }
-            
-            leftStack.Push(leftNode.left);
-            leftStack.Push(leftNode.right);
-            rightStack.Push(rightNode.right);
-            rightStack.Push(rightNode.left);
-        }
-        
-        
-        return leftStack.Count == 0 && rightStack.Count == 0;
+        return root == null || IsSymmetric(root.left, root.right);
     }
     
-    public bool IsSymmetricRecursive(TreeNode root) {
-        if(root == null) {
+    public bool IsSymmetric(TreeNode node, TreeNode sibling) {
+        if(node == null && sibling == null) {
             return true;
         }
         
-        return Compare(root.left, root.right);
-    }
-    
-    private bool Compare(TreeNode left, TreeNode right) {
-        if(left == null && right == null) {
-            return true;
-        }
-        
-        if(left?.val != right?.val) {
+        if(node == null || sibling == null) {
             return false;
         }
         
-        return Compare(left.left, right.right) && Compare(left.right, right.left);
-    }
-}
-
-public class SolutionRecursive {
-    public bool IsSymmetric(TreeNode root) {
-        if(root == null) {
-            return true;
-        }
+        var selfSymmetric = node.val == sibling.val;
         
-        return Compare(root.left, root.right);
-    }
-    
-    private bool Compare(TreeNode left, TreeNode right) {
-        if(left == null && right == null) {
-            return true;
-        }
-        
-        if(left?.val != right?.val) {
-            return false;
-        }
-        
-        return Compare(left.left, right.right) && Compare(left.right, right.left);
+        return selfSymmetric && IsSymmetric(node.left, sibling.right) && IsSymmetric(node.right, sibling.left);
     }
 }
