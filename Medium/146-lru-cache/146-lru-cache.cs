@@ -1,66 +1,82 @@
 public class Node {
-    public int key;
-    public int val;
-    public Node next;
-    public Node prev;
+    public int Value { get; set;}
+    public int Key { get;set; }
+    public Node Next {get;set;}
+    public Node Prev { get;set;}
 }
 
+// tail -> head
 public class LRUCache {
-    private Node first = new Node();
-    private Node last = new Node();
+    private Node tail = new();
+    private Node head = new();
+    private int capacity = 0;
+    private Dictionary<int, Node> storage = new();
     
-    private int capacity;
-    private int count = 0;
-    private Dictionary<int, Node> cache = new();
+    private void Link(Node left, Node right) {
+        var leftNext = left.Next;
         
+        left.Next = right;
+        right.Next = leftNext;
+        leftNext.Prev = right;
+        right.Prev = left;
+    }
+    
+    private void RemoveFromQueue(Node node) {
+        node.Prev.Next = node.Next;
+        node.Next.Prev = node.Prev;
+    }
+    
+    private void AddToQueue(Node node) {
+        Link(tail, node);
+    }
+    
+    private void MoveToEnd(Node node) {
+        RemoveFromQueue(node);
+        AddToQueue(node);
+    }
+    
+    private void EnsureCapacity() {
+        if(storage.Count <= capacity) {
+            return;
+        }
+        
+        storage.Remove(head.Prev.Key);
+        RemoveFromQueue(head.Prev);
+    }
+    
     public LRUCache(int capacity) {
         this.capacity = capacity;
-        first.next = last;
-        last.prev = first;
+        tail.Next = head;
+        head.Prev = tail;
     }
     
     public int Get(int key) {
-        if(!cache.ContainsKey(key)) {
-            return -1;
+        if(storage.ContainsKey(key)) {
+            var node = storage[key];
+            MoveToEnd(node);
+            return node.Value;
         }
         
-        var node = cache[key];
-        Remove(node);
-        MoveForward(node);
-        return cache[key].val;
+        return -1;
     }
     
-    private void MoveForward(Node node) {
-        node.prev = last.prev;
-        node.prev.next = node;
-        last.prev = node;
-        node.next = last;
-    }
-    
-    private void Remove(Node node) {
-        node.prev.next = node.next;
-        node.next.prev = node.prev;
-    }
-    
-    public void Put(int key, int value) {
-        if(cache.ContainsKey(key)) {
-            var node = cache[key];
-            node.val = value;
-            Remove(node);
-            MoveForward(node);
+    public void Put(int key, int value) {  
+        if(storage.ContainsKey(key)) {
+            var node = storage[key];
+            node.Value = value;
+            MoveToEnd(node);
+
         } else {
-            if(capacity == count) {
-                var lruNode = first.next;
-                Remove(lruNode);
-                cache.Remove(lruNode.key);
-                count--;
+            if(storage.Count == capacity) {
+                storage.Remove(key);
             }
             
-            count++;
-            var node = new Node { val = value, key = key };
-            cache[key] = node;
-            MoveForward(node);
+            var node = new Node { Value = value, Key = key };
+            storage[key] = node;
+            AddToQueue(node);
         }
+        
+        EnsureCapacity();
     }
 }
 
