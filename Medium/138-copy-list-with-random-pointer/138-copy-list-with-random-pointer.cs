@@ -15,24 +15,27 @@ public class Node {
 
 public class Solution {
     public Node CopyRandomList(Node head) {
-        Dictionary<Node, Node> copies = new();
-        return Copy(head, copies);
-    }
-    
-    private Node Copy(Node node, Dictionary<Node, Node> copies) {
-        if(node == null) {
+        if(head == null) {
             return null;
         }
 
+        Dictionary<Node, Node> copies = new();
+        return Dfs(head, copies);
+    }
+    
+    private Node Dfs(Node node, Dictionary<Node, Node> copies) {
+        if(node == null) {
+            return null;
+        }
+        
         if(copies.ContainsKey(node)) {
             return copies[node];
         }
         
-        var copy = new Node(node.val);
-        copies[node] = copy;
+        copies[node] = new Node(node.val);
+        copies[node].next = Dfs(node.next, copies);
+        copies[node].random = Dfs(node.random, copies);
         
-        copy.next = Copy(node.next, copies);
-        copy.random = Copy(node.random, copies);
-        return copy;
+        return copies[node];
     }
 }
