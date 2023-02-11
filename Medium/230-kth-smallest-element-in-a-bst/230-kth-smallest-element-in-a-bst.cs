@@ -12,33 +12,40 @@
  * }
  */
 public class Solution {
+    private int? result;
+    
     public int KthSmallest(TreeNode root, int k) {
-        return GetOrderOrReturnValue(root, k, 0).value;
+        Dfs(root, k);
+        return result.Value;
     }
     
-    private (int parentOrder, int value) GetOrderOrReturnValue(TreeNode node, int targetK, int smallerCount) {
+    // return (found, number of items)
+    private int Dfs(TreeNode node, int k) {
         if(node == null) {
-            return (0, -1);
+            return 0;
         }
         
-        (var leftCount, var leftValue) = GetOrderOrReturnValue(node.left, targetK, smallerCount);
+        var leftCount = Dfs(node.left, k);
         
-        if(leftValue != -1) {
-            return (-1, leftValue);
+        if(ResultIsReady()) {
+            return Dummy();
         }
         
-        var selfOrder = smallerCount + leftCount + 1;
-        
-        if(selfOrder == targetK) {
-            return (-1, node.val);
+        if(leftCount + 1 == k) {
+            result = node.val;
+            return Dummy();
         }
         
-        (var rightCount, var rightValue) = GetOrderOrReturnValue(node.right, targetK, selfOrder);
+        var rightCount = Dfs(node.right, k - leftCount - 1);
         
-        if(rightValue != -1) {
-            return (-1, rightValue);
+        if(ResultIsReady()) {
+            return Dummy();
         }
         
-        return (leftCount + rightCount + 1, -1);
+        return leftCount + rightCount + 1;
     }
+    
+    private bool ResultIsReady() => result != null;
+    private int Dummy() => -1;
+
 }
