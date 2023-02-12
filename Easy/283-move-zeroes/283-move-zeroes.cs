@@ -1,14 +1,22 @@
 public class Solution {
     public void MoveZeroes(int[] nums) {
-        var nextPos = 0;
-        for(int i = 0; i < nums.Length; i++) {
-            if(nums[i] != 0) {
-                var val = nums[i];
-                nums[i] = 0;
-                nums[nextPos] = val;
-
-                nextPos++;
+        var nextValidPos = 0;
+        var curPos = 0;
+        
+        while(curPos < nums.Length) {
+            if(nums[curPos] == 0) {
+                curPos++;
+                continue;
             }
+            
+            nums[nextValidPos] = nums[curPos];
+            nextValidPos++;
+            curPos++;
+        }
+        
+        while(nextValidPos < nums.Length) {
+            nums[nextValidPos] = 0;
+            nextValidPos++;
         }
     }
 }
